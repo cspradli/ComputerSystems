@@ -9,9 +9,9 @@
 /*
  * This program implements a linked list
  */
-
+char buffer[100];
 typedef struct ELE {
-	char* value;
+	char *data;
 	struct ELE *next;
 } node;
 
@@ -19,7 +19,7 @@ typedef struct ELE {
 typedef struct {
 	node *head;
 	node *tail;
-	int size;
+	int count;
 } linked_list;
 
 /********** Operations on linked list **************/
@@ -37,7 +37,7 @@ linked_list *create_linked_list();
  * Returns false if ll is Null or otherwise unsuccesfull
  *
  */
-bool linked_list_destroy(linked_list *ll);
+void linked_list_destroy(linked_list *ll);
 
 /*
  *
@@ -45,20 +45,20 @@ bool linked_list_destroy(linked_list *ll);
  * Returns true if succesfull
  * Returns false if ll is null or otherwise unsuccesfull
  */
-bool linked_list_add(linked_list *ll, char* key);
+bool linked_list_add(linked_list *ll, char buffer[100]);
 
 /*
  * Delete element from linked list
  * Returns true if succesfull
  * Returns false if ll is null, empty, or otherwise unsuccesfull
  */
-bool linked_list_delete(linked_list *ll, char* key);
+bool linked_list_delete(linked_list *ll, char buffer[100]);
 
 /*
  * Search for element by key
  * Returns node with correct key
  */
-node linked_list_search(linked_list *ll, char* key);
+node linked_list_search(linked_list *ll, char buffer[100]);
 
 /*
  * Gets the node based on position
