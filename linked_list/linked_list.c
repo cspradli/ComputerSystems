@@ -10,7 +10,6 @@ linked_list *create_linked_list(){
     if(ll == NULL){return NULL;}
     ll->count = 0;
     ll->head = NULL;
-    ll->tail = NULL;
     printf("Linked list created\n");
     return ll;
 }
@@ -40,10 +39,10 @@ bool linked_list_add(linked_list *ll, char key[100]){
         return false;
     }
     if (newn == NULL){ return false; }
+
     newn->data = key;
     newn->next = ll->head;
     ll->head = newn;
-    if (ll->count == 0) { ll->tail = newn; }
     ll->count++;
     printf("Linked list added with key: %s\n", newn->data);
     return true;

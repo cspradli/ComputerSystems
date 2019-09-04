@@ -18,7 +18,6 @@ typedef struct ELE {
 /* Linked list structure */
 typedef struct {
 	node* head;
-	node* tail;
 	int count;
 } linked_list;
 
