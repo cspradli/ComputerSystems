@@ -8,6 +8,7 @@ int main(int argc, char**argv){
     char buffer[100];
 
     ll = create_linked_list(); // create the list
+    printf("Linked list created\n");
     // add 10 items
     for(i = 0; i < 10; i++){
         sprintf(buffer, "item %i", i);

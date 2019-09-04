@@ -17,8 +17,8 @@ typedef struct ELE {
 
 /* Linked list structure */
 typedef struct {
-	node *head;
-	node *tail;
+	node* head;
+	node* tail;
 	int count;
 } linked_list;
 
@@ -37,7 +37,7 @@ linked_list *create_linked_list();
  * Returns false if ll is Null or otherwise unsuccesfull
  *
  */
-void linked_list_destroy(linked_list *ll);
+bool linked_list_destroy(linked_list *ll);
 
 /*
  *
@@ -52,17 +52,17 @@ bool linked_list_add(linked_list *ll, char buffer[100]);
  * Returns true if succesfull
  * Returns false if ll is null, empty, or otherwise unsuccesfull
  */
-bool linked_list_delete(linked_list *ll, char buffer[100]);
+bool linked_list_delete(linked_list *ll, node *key);
 
 /*
  * Search for element by key
  * Returns node with correct key
  */
-node linked_list_search(linked_list *ll, char buffer[100]);
+node *linked_list_search(linked_list *ll, char buffer[100]);
 
 /*
  * Gets the node based on position
  * Returns the node
  * Reuturns 0 if unsuccesful
  */
-node linked_list_get(linked_list *ll, int position);
+node *linked_list_get(linked_list *ll, int position);
