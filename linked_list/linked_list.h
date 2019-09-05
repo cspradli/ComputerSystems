@@ -65,3 +65,5 @@ node *linked_list_search(linked_list *ll, char buffer[100]);
  * Reuturns 0 if unsuccesful
  */
 node *linked_list_get(linked_list *ll, int position);
+
+void printList(linked_list *ll);
