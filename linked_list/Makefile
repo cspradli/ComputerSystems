@@ -6,13 +6,13 @@ CC = gcc
 CFLAGS = -O -Wall
 LFLAGS = 
 
-all: linked_list
+all: linked_list_test
 
 
-linked_list: main.c linked_list.c linked_list.h
+linked_list_test: main.c linked_list.c linked_list.h
 	$(CC) $(CFLAGS) -c -o linked_list.o linked_list.c
 	$(CC) $(CLFAGS) -c -o main.o main.c
-	$(CC) $(LFLAGS) -o linked_list main.o linked_list.o
+	$(CC) $(LFLAGS) -o linked_list_test main.o linked_list.o
 
 
 clean:

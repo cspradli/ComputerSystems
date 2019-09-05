@@ -36,6 +36,7 @@ int main(int argc, char**argv){
     }
     //print list using print function
     linked_list_print(ll);
+    linked_list_destroy(ll);
 
     return 0;
 }
