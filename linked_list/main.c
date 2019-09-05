@@ -8,6 +8,7 @@ int main(int argc, char**argv){
     char buffer[100];
 
     ll = create_linked_list(); // create the list
+    
     linked_list_add(ll, "item 1");
     linked_list_add(ll, "item 2");
     linked_list_add(ll, "item 3");
@@ -18,6 +19,7 @@ int main(int argc, char**argv){
     linked_list_add(ll, "item 8");
     linked_list_add(ll, "item 9");
     linked_list_add(ll, "item 10");
+    
     // print list
     for(i=0; i< ll->count; i++){
         n = linked_list_get(ll, i);
@@ -32,6 +34,8 @@ int main(int argc, char**argv){
         n = linked_list_get(ll, i);
         printf("%i %s\n", i, n->data);
     }
+    //print list using print function
+    linked_list_print(ll);
 
     return 0;
 }

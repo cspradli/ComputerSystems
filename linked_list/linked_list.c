@@ -103,7 +103,8 @@ node *linked_list_search(linked_list *ll, char key[100]){
 void linked_list_print(linked_list *ll){ 
     node *current = ll->head;
     while (current != NULL){ 
-     printf(" %s ", current->data); 
+     printf("%s ", current->data); 
      current = current->next; 
-  } 
+    }
+    printf("\n"); 
 } 
