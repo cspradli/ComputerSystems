@@ -24,7 +24,6 @@ bool linked_list_destroy(linked_list *ll){
         }
         ll->head = NULL;
         free(ll);
-	printf("Linked list destroyed\n");
         return true;
     }
     return false;
@@ -77,14 +76,15 @@ bool linked_list_delete(linked_list *ll, node *key){
 }
 
 node *linked_list_get(linked_list *ll, int position){
-    node *tempToFree = ll->head;
-    if (tempToFree == NULL){return tempToFree;}
+    node *current = ll->head;
+    if (current == NULL){return current;}
     int counter = 0;
-    while(tempToFree != NULL){
-        if (counter == position){ return tempToFree; }
+    while(current != NULL){
+        if (counter == position){ return current; }
         counter++;
-        tempToFree = tempToFree->next;
+        current = current->next;
     }
+    return current=NULL;
 }
 
 node *linked_list_search(linked_list *ll, char key[100]){
@@ -100,7 +100,7 @@ node *linked_list_search(linked_list *ll, char key[100]){
     return current;
 }
 
-void printList(linked_list *ll){ 
+void linked_list_print(linked_list *ll){ 
     node *current = ll->head;
     while (current != NULL){ 
      printf(" %s ", current->data); 
