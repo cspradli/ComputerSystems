@@ -1,0 +1,21 @@
+Assignment 2: Book Problems
+Caleb Spradlin
+CSCI 335
+
+1)
+	A. From 3.5 days to 2.8 days, 0.7 days difference
+	B. From 3.5 days to 2.807 days, 0.693 days difference
+	C. Implement option A, faster by 0.009 days, execution time of 2.8 days
+	D. Execution time of 2.107 days
+2)
+	A. 1010 1100 1010 0111 1111 1000
+	B. 0xD95A
+	C. 1111 1111 1111 0000 0000 1010
+	D. 0x27B59B
+	
+3)
+	A. 000000010 (2)
+	B. 101111111 (383)
+	C. 101111101 (381)
+	D. 111000100 (452)
+D. 
