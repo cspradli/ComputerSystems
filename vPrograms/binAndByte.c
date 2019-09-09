@@ -18,11 +18,15 @@ int main(int argc, char const *argv[])
     
     /* Should return some sort of overflow */
     int b = 0xFFFF000c;
-    printf("2a       b=%u\n", b);
-    printf("2b       b=%u\n", b << 15);
+    printf("2a       b=%i\n", b);
+    printf("2b       b=%i\n", b << 15);
 
+    int d = 0xFFFF000c;
+    printf("3a       d=%i\n", d);
+    printf("3b       d=%i\n", (d >> 2));
+    
     int c = 0xFFFF000c;
-    printf("3a       c=%i\n", c);
-    printf("3b       c=%i\n", c >> 16);
+    printf("3a       c=%u\n", c);
+    printf("3b       c=%u\n", c >> 16);
     return 0;
 }
