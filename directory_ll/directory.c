@@ -35,6 +35,7 @@ void dir_put(char *path_name){
         sprintf(name, "%s/%s", path_name, dir->d_name);
         linked_list_add(ll, dir->d_name);
     }
+    printf("LINKED LIST: ");
     linked_list_print(ll);
     closedir(dirPointer);
 }
