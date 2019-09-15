@@ -30,10 +30,12 @@ void dir_put(char *path_name){
         return;
     }
     while ((dir = readdir(dirPointer)) != NULL){
+        printf("%s\n", dir->d_name);
         if (strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0) continue;
         sprintf(name, "%s/%s", path_name, dir->d_name);
         linked_list_add(ll, dir->d_name);
     }
+    linked_list_print(ll);
     closedir(dirPointer);
 }
 
