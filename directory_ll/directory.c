@@ -6,18 +6,20 @@
  */
 #include <dirent.h>
 #include <errno.h>
-#include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
+#include "directory.h"
 
-int dir_print(char *);
+#define MAX_PATH 1024
 
-int dir_print(char *path_name){
-    char largeFileBuffer[8192];
-    DIR *dirPointer = opendir(path_name);;
-    if (dirPointer != NULL){
-        
-    }
+void dir_put(char *path_name){
+    linked_list *ll;
+    char name[MAX_PATH];
+    Dirent *dp;
+    DIR *dirPointer;
+
+    ll = create_linked_list();
+}
+
+void dir_print(linked_list *ll){
 }

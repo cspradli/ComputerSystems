@@ -9,7 +9,7 @@ LFLAGS =
 all: myls
 
 
-linked_list: main.c linked_list.c linked_list.h directory.c directory.h
+myls: main.c linked_list.c linked_list.h directory.c directory.h
 	$(CC) $(CFLAGS) -c -o linked_list.o linked_list.c
 	$(CC) $(CLFAGS) -c -o main.o main.c
 	$(CC) $(LFLAGS) -c -o directory.o directory.c
