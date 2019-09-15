@@ -7,7 +7,7 @@
 
 linked_list *create_linked_list(){
     linked_list *ll = malloc(sizeof(linked_list));
-    if(ll == NULL){return NULL;}
+    if(ll == NULL) return NULL;
     ll->count = 0;
     ll->head = NULL;
     ll->tail = NULL;
@@ -39,11 +39,11 @@ bool linked_list_add(linked_list *ll, char key[100]){
         free(newn);
         return false;
     }
-    if (newn == NULL){ return false; }
+    if (newn == NULL) return false;
     newn->data = key;
     newn->next = ll->head;
     ll->head = newn;
-    if (ll->count == 0) { ll->tail = newn; }
+    if (ll->count == 0) ll->tail = newn;
     ll->count++;
     printf("Linked list added with key: %s\n", newn->data);
     return true;
@@ -90,7 +90,7 @@ node *linked_list_get(linked_list *ll, int position){
     node *tempToFree = ll->head;
     printf("Temptofree node key is %s\n", tempToFree->data);
     int counter = 0;
-    if (ll == NULL || ll->count == 0){ return tempToFree; }
+    if (ll == NULL || ll->count == 0) return tempToFree;
     while(tempToFree != NULL){
         if (counter == position){
 	    printf("found the item\n");
@@ -104,7 +104,7 @@ node *linked_list_get(linked_list *ll, int position){
 
 node *linked_list_search(linked_list *ll, char key[100]){
     node *tempToFree = NULL;
-    if (ll == NULL || ll->count == 0){ return tempToFree; }
+    if (ll == NULL || ll->count == 0) return tempToFree;
     tempToFree = ll->head;
     while (tempToFree != NULL){
         if(tempToFree->data == key){
