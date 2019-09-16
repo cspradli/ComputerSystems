@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <assert.h>
 #include "student.h"
 
 #define CLASS_SIZE 17
@@ -53,6 +53,44 @@ int main(){
 	free(dynamic_class);
 	int j = 0;
 	int y = (~0 + 1);
-	printf("j = %i and y = %i\n",j,y);	
+	printf("j = %i and y = %i\n",j,y);
+
+	int x = 4;
+	printf("x = %i\n", (x << 1));	
+
+	int a = 5;
+	int b = a << 3;
+	int c = (a << 2);
+	int d = (a << 1);
+	printf(" a should be %i      a = %i\n", (5*14), (b+c+d));	
+
+	a = 4;
+	b = a << 5;
+	c = a << 3;
+	d = a << 2;
+	int e = b + c + d;
+	printf(" a should be %i      a = %i\n", (4*-44), (~e + 1));	
+
+	a = 4;
+	b = a << 10;
+	printf(" a should be %i      a = %i\n", (4*1023), b - a);	
+	
+	x = 23;
+	printf("1- %i\n", !(!~x));
+
+	x = 23;
+	printf("2- %i\n", !x);
+
+	x = 23;
+	printf("3- %i\n", !~(x & 0xff));
+
+	x = -24;
+	x = x >> 24;
+	x = x & 0xff;
+	if (x > 0 || x < 0){
+		printf("3- 1\n");
+	} else {
+		printf("3- 0\n");		
+	}
 }       
 
