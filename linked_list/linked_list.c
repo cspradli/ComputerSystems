@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 #include "linked_list.h"
 
@@ -19,6 +20,7 @@ bool linked_list_destroy(linked_list *ll){
         node *next;
         while (current != NULL){
             next = current->next;
+	    free(current->data);
             free(current);
             current = next;
         }
@@ -29,7 +31,7 @@ bool linked_list_destroy(linked_list *ll){
     return false;
 }
 
-bool linked_list_add(linked_list *ll, char key[100]){
+bool linked_list_add(linked_list *ll, char *key){
     node *newn;
     newn = malloc(sizeof(node));
     if (ll == NULL){
@@ -37,7 +39,8 @@ bool linked_list_add(linked_list *ll, char key[100]){
         return false;
     }
     if (newn == NULL){ return false; }
-    newn->data = key;
+    newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
+    strcpy(newn->data, key);
     newn->next = ll->head;
     ll->head = newn;
     ll->count++;
@@ -51,6 +54,7 @@ bool linked_list_delete(linked_list *ll, node *key){
     tempToFree = ll->head;
     if (tempToFree != NULL && tempToFree->data == key->data){
         ll->head = ll->head->next;
+	free(tempToFree->data);
         free(tempToFree);
         ll->count--;
         return true;
@@ -87,7 +91,7 @@ node *linked_list_get(linked_list *ll, int position){
     return current=NULL;
 }
 
-node *linked_list_search(linked_list *ll, char key[100]){
+node *linked_list_search(linked_list *ll, char *key){
     node *current = NULL;
     if (ll == NULL || ll->count == 0){ return current; }
     current = ll->head;
