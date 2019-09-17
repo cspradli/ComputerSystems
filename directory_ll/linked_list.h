@@ -11,7 +11,7 @@
 /*
  * This program implements a linked list
  */
-char buffer[100];
+
 typedef struct ELE {
 	char *data;
 	struct ELE *next;
@@ -47,7 +47,7 @@ bool linked_list_destroy(linked_list *ll);
  * Returns true if succesfull
  * Returns false if ll is null or otherwise unsuccesfull
  */
-bool linked_list_add(linked_list *ll, char buffer[100]);
+bool linked_list_add(linked_list *ll, char *input);
 
 /*
  * Delete element from linked list
@@ -62,7 +62,7 @@ bool linked_list_delete(linked_list *ll, node *key);
  * Takes ll and a string (char array)
  * Returns node with correct key
  */
-node *linked_list_search(linked_list *ll, char buffer[100]);
+node *linked_list_search(linked_list *ll, char *input);
 
 /*
  * Gets the node based on position
