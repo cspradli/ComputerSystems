@@ -124,5 +124,6 @@ void linked_list_print(linked_list *ll){
 
 
 linked_list *linked_list_sort(linked_list *ll){
+    int counter = 0;
     return ll;
 }
