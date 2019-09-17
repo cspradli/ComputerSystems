@@ -77,3 +77,9 @@ node *linked_list_get(linked_list *ll, int position);
  * Takes in linked list
  */
 void linked_list_print(linked_list *ll);
+
+/*
+ * Sorts list alphabetically
+ * Returns sorted list
+ */
+linked_list *linked_list_sort(linked_list *ll);

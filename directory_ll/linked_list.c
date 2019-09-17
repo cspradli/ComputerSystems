@@ -121,3 +121,8 @@ void linked_list_print(linked_list *ll){
     }
     printf("\n"); 
 } 
+
+
+linked_list *linked_list_sort(linked_list *ll){
+    return ll;
+}
