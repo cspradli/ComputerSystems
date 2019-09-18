@@ -50,6 +50,13 @@ bool linked_list_destroy(linked_list *ll);
 bool linked_list_add(linked_list *ll, char *input);
 
 /*
+ * Add to linked list, based on alphabetical sort
+ * Returns true if succesfull
+ * Returns false if ll is null or otherwise unsuccesful
+ */
+bool linked_list_insertion(linked_list *ll, char *key);
+
+/*
  * Delete element from linked list
  * Takes in ll and node with which to compare
  * Returns true if succesfull
@@ -77,9 +84,3 @@ node *linked_list_get(linked_list *ll, int position);
  * Takes in linked list
  */
 void linked_list_print(linked_list *ll);
-
-/*
- * Sorts list alphabetically
- * Returns sorted list
- */
-linked_list *linked_list_sort(linked_list *ll);

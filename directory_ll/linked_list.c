@@ -11,6 +11,7 @@
 #include "linked_list.h"
 
 linked_list *create_linked_list(){
+    printf("Link list created\n");
     linked_list *ll = malloc(sizeof(linked_list));
     if(ll == NULL) return NULL;
     ll->count = 0;
@@ -50,6 +51,63 @@ bool linked_list_add(linked_list *ll, char *key){
     ll->count++;
     return true;
 }
+
+
+bool linked_list_insertion(linked_list *ll, char *key){
+    node *newn;
+    newn = malloc(sizeof(node));
+    if (ll == NULL){
+        free(newn);
+        return false;
+    }
+    if (newn == NULL) return false;
+    //malloc needed memory for string
+    newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
+    strcpy(newn->data, key);
+    node *tempToFree = ll->head;
+    if (tempToFree == NULL){
+        newn->next = ll->head;
+        ll->head = newn;
+        ll->count++;
+        return true;
+    }
+    while(tempToFree != NULL){
+        int check = strcmp(newn->data, tempToFree->data);
+        if (check < 0){
+            newn->next = tempToFree;
+            tempToFree = newn;
+            ll->count++;
+            return true;
+        } else if (check >= 0){
+            newn->next = tempToFree->next;
+            tempToFree->next = newn;
+            ll->count++;
+            return true;
+        }
+        tempToFree = tempToFree->next;
+
+    }
+    /*
+    if (tempToFree == NULL || strcmp(tempToFree->data, newn->data) < 0){
+        printf("temp to free is at head\n");
+        newn->next = tempToFree;
+        tempToFree = newn;
+        ll->count++;
+        linked_list_print(ll);
+        return true;
+    } else {
+        while (tempToFree != NULL && strcmp(tempToFree->next->data, newn->data) < 0){
+            tempToFree = tempToFree->next;
+        }
+        newn->next = tempToFree->next;
+        tempToFree->next = newn;
+        ll->count++;
+        return true;
+    }*/
+    return false;
+
+}
+
 
 bool linked_list_delete(linked_list *ll, node *key){
     if (ll == NULL || ll->count == 0) return false;
@@ -122,8 +180,3 @@ void linked_list_print(linked_list *ll){
     printf("\n"); 
 } 
 
-
-linked_list *linked_list_sort(linked_list *ll){
-    int counter = 0;
-    return ll;
-}
