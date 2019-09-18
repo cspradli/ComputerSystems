@@ -71,39 +71,28 @@ bool linked_list_insertion(linked_list *ll, char *key){
         ll->count++;
         return true;
     }
-    while(tempToFree != NULL){
+    if(tempToFree != NULL){
         int check = strcmp(newn->data, tempToFree->data);
         if (check < 0){
             newn->next = tempToFree;
             tempToFree = newn;
             ll->count++;
             return true;
-        } else if (check >= 0){
+        } else if (check == 0){
+            newn->next = tempToFree->next;
+            tempToFree->next = newn;
+            ll->count++;
+            return true;
+        } else if (check > 0){
+            while (strcmp(newn->data, tempToFree->data) > 0 && tempToFree->next != NULL){
+                tempToFree = tempToFree->next;
+            }
             newn->next = tempToFree->next;
             tempToFree->next = newn;
             ll->count++;
             return true;
         }
-        tempToFree = tempToFree->next;
-
     }
-    /*
-    if (tempToFree == NULL || strcmp(tempToFree->data, newn->data) < 0){
-        printf("temp to free is at head\n");
-        newn->next = tempToFree;
-        tempToFree = newn;
-        ll->count++;
-        linked_list_print(ll);
-        return true;
-    } else {
-        while (tempToFree != NULL && strcmp(tempToFree->next->data, newn->data) < 0){
-            tempToFree = tempToFree->next;
-        }
-        newn->next = tempToFree->next;
-        tempToFree->next = newn;
-        ll->count++;
-        return true;
-    }*/
     return false;
 
 }
