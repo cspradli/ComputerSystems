@@ -64,35 +64,28 @@ bool linked_list_insertion(linked_list *ll, char *key){
     //malloc needed memory for string
     newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
     strcpy(newn->data, key);
-    node *tempToFree = ll->head;
-    if (tempToFree == NULL){
-        newn->next = ll->head;
+    if (ll->head == NULL){
         ll->head = newn;
         ll->count++;
         return true;
-    }
-    if(tempToFree != NULL){
-        int check = strcmp(newn->data, tempToFree->data);
-        if (check < 0){
-            newn->next = tempToFree;
-            tempToFree = newn;
-            ll->count++;
-            return true;
-        } else if (check == 0){
-            newn->next = tempToFree->next;
-            tempToFree->next = newn;
-            ll->count++;
-            return true;
-        } else if (check > 0){
-            while (strcmp(newn->data, tempToFree->data) > 0 && tempToFree->next != NULL){
-                tempToFree = tempToFree->next;
-            }
-            newn->next = tempToFree->next;
-            tempToFree->next = newn;
-            ll->count++;
-            return true;
+    } else if(strcmp(newn->data, ll->head->data) < 0) {
+        newn->next = ll->head;
+        ll->head = newn;
+        return true;
+    } else {
+        node *after = ll->head->next;
+        node *before = ll->head;
+        while (after != NULL){
+            if (strcmp(newn->data, after->data) < 0) break;
+            before = after;
+            after = after->next;
         }
+        newn->next = before->next;
+        before->next = newn;
+        return true;
     }
+    free(newn->data);
+    free(newn);
     return false;
 
 }
@@ -107,7 +100,7 @@ bool linked_list_delete(linked_list *ll, node *key){
     //checks the head for compatability
     if (tempToFree != NULL && strcmp(tempToFree->data, key->data)==0){
         ll->head = ll->head->next;
-	free(tempToFree->data);
+	    free(tempToFree->data);
         free(tempToFree);
         ll->count--;
         return true;
