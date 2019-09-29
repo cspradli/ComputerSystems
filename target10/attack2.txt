@@ -1,7 +1,6 @@
-ff ff ff ff ff ff ff ff 
+48 c7 c7 bf 7b 92 76 49
+bc 00 5b 55 55 55 55 00
+00 41 54 c3 ff ff ff ff
+ff ff ff ff 48 c7 c7 bf
 ff ff ff ff ff ff ff ff
-ff ff ff ff ff ff ff ff
-ff ff ff ff ff ff ff ff
-ff 76 92 7b bf c7 c7 48
-00 5b 55 55 55 55 00 00
-
+68 fd 66 55 00 00 00 00
