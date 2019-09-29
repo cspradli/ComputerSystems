@@ -54,7 +54,7 @@ bool linked_list_add(linked_list *ll, char *input);
  * Returns true if succesfull
  * Returns false if ll is null or otherwise unsuccesful
  */
-bool linked_list_insertion(linked_list *ll, char *key);
+bool linked_list_insertion(linked_list *ll, int key);
 
 /*
  * Delete element from linked list

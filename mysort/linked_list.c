@@ -39,7 +39,7 @@ bool linked_list_destroy(linked_list *ll){
     return false;
 }
 
-bool linked_list_add(linked_list *ll, char *key){
+bool linked_list_add(linked_list *ll, int key){
     node *newn;
     newn = malloc(sizeof(node));
    
@@ -49,8 +49,8 @@ bool linked_list_add(linked_list *ll, char *key){
     }
 
     if (newn == NULL){ return false; }
-    newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
-    strcpy(newn->data, key);
+    newn->data = malloc(sizeof(key));
+    newn->data = key
     newn->next = ll->head;
     ll->head = newn;
     ll->count++;
@@ -70,7 +70,7 @@ bool linked_list_insertion(linked_list *ll, char *key){
     if (newn == NULL) return false;
     //malloc needed memory for string
     newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
-    strcpy(newn->data, key);
+    newn->data = key
 
     if (ll->head == NULL){
         ll->head = newn;
