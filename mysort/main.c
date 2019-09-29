@@ -7,15 +7,16 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "directory.h"
+#include "file_input.h"
 
 int main(int argc, char *argv[]) {
-
+    linked_list *ll;
+    ll = create_linked_list();
     if (argc > 1) {
         printf("Printing directory of: %s\n", argv[1]);
 	int counter = 0;
 	for (counter = 1; counter < argc; counter++){
-		read_file(argv[counter]);
+		read_ints(ll, argv[counter]);
 		printf("argv[%d]: %s", counter, argv[counter]);
 	}
     } else {
