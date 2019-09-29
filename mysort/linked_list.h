@@ -49,12 +49,6 @@ bool linked_list_destroy(linked_list *ll);
  */
 bool linked_list_add(linked_list *ll, int input);
 
-/*
- * Add to linked list, based on alphabetical sort
- * Returns true if succesfull
- * Returns false if ll is null or otherwise unsuccesful
- */
-bool linked_list_insertion(linked_list *ll, int key);
 
 /*
  * Delete element from linked list

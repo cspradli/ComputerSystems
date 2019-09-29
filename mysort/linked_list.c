@@ -55,49 +55,6 @@ bool linked_list_add(linked_list *ll, int key){
     return true;
 }
 
-/*
-bool linked_list_insertion(linked_list *ll, int key){
-    node *newn;
-    newn = malloc(sizeof(node));
-
-    if (ll == NULL){
-        free(newn);
-        return false;
-    }
-    
-    if (newn == NULL) return false;
-    //malloc needed memory for string
-    newn->data = malloc(sizeof(int));
-    newn->data = key;
-
-    if (ll->head == NULL){
-        ll->head = newn;
-        ll->count++;
-        return true;
-    } else if(strcmp(newn->data, ll->head->data) < 0) {
-        newn->next = ll->head;
-        ll->head = newn;
-        return true;
-    } else {
-        node *after = ll->head->next;
-        node *before = ll->head;
-
-        while (after != NULL){
-            if (strcmp(newn->data, after->data) < 0) break;
-            before = after;
-            after = after->next;
-        }
-
-        newn->next = before->next;
-        before->next = newn;
-        return true;
-    }
-    free(newn->data);
-    free(newn);
-    return false;
-
-}
-*/
 
 bool linked_list_delete(linked_list *ll, node *key){
     if (ll == NULL || ll->count == 0) return false;

@@ -24,6 +24,7 @@ void read_ints(linked_list *ll, const char *file_name){
         linked_list_add(ll, i);
         fscanf(in_file, "%d", &i);
     }
+    printf("\n");
     fclose(in_file);
     
 }
