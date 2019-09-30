@@ -21,6 +21,8 @@ int main(int argc, char *argv[]) {
 	    }
         printf("Printed from linked list\n");
         linked_list_print(ll);
+        insertion_sort_linked_list(ll);
+        linked_list_print(ll);
     } else {
         printf("Error occured, please input file names as arguments\n");
         return 0;

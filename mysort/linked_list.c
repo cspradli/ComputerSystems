@@ -120,6 +120,25 @@ node *linked_list_search(linked_list *ll, int key){
 
     return current;
 }
+int compare_to(int i, int k){
+    return i-k;
+}
+
+void insertion_sort_linked_list(linked_list *ll){
+     int current_key = 0;
+     node *current = ll->head->next;
+     node *current_previous = ll->head;
+     for (int i = 1; i < ll->count; i++){
+         current_key = current->data;
+         int j = i-1;
+         while (j>= 0 && (compare_to(current_key, current_previous->data) < 0)){
+            current_previous->next = current_previous;
+            j--;
+         }
+         current_previous->next->data = current_key;
+         
+     }
+}
 
 void linked_list_print(linked_list *ll){ 
     node *current = ll->head;
