@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 		    printf("argv[%d]: %s \n", counter, argv[counter]);
             read_string(ll, argv[counter]);
 	    }
-        printf("Printed from linked list\n");
+        printf("Printed from linked list:   ");
         linked_list_print(ll);
     } else {
         printf("Error occured, please input file names as arguments\n");
