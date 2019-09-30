@@ -79,12 +79,12 @@ node *linked_list_get(linked_list *ll, int position);
 int compare_to(int i, int k);
 
 /*
- * Sorts a linked list based on numeric value
- * Takes linked list as arguments
- * Returns a new linked list
- * Returns type null if unable to sort
+ * Sorts a linked list based on numeric value on insertion
+ * Takes linked list and key as arguments
+ * Returns true if succesfull, false if otherwise
  */
-void insertion_sort_linked_list(linked_list *ll);
+bool linked_list_insertion(linked_list *ll, int key);
+
 
 /*
  * Prints out entire list
