@@ -4,9 +4,7 @@
  * Author: Caleb Spradlin
  * Date: 09/15/19
  */
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "file_input.h"
 
 int main(int argc, char *argv[]) {

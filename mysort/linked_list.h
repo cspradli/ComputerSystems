@@ -74,7 +74,7 @@ node *linked_list_search(linked_list *ll, int input);
 node *linked_list_get(linked_list *ll, int position);
 
 /*
- * Simple comparison function
+ * Simple comparison helper function
  */
 int compare_to(int i, int k);
 

@@ -5,7 +5,6 @@
  * Date: 09/28/19
  */
 
-#include <stdio.h> 
 #include "file_input.h"
 
 void read_ints(linked_list *ll, const char *file_name){
