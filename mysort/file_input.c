@@ -7,14 +7,14 @@
 
 #include "file_input.h"
 
-void read_ints(linked_list *ll, const char *file_name){
+void read_string(linked_list *ll, const char *file_name){
     FILE* in_file = fopen(file_name, "r");
-    char *i = " ";
-    fscanf(in_file, "%s", i);
+    char s[2];
+    fscanf(in_file, "%s", &s[0]);
     while (!feof(in_file)) {
-        printf("%s ", i);
-        linked_list_insertion(ll, i);
-        fscanf(in_file, "%s", i);
+        printf("%s ", s);
+        linked_list_insertion(ll, s);
+        fscanf(in_file, "%s", &s[0]);
     }
     printf("\n");
     fclose(in_file);

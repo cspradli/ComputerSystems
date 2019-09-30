@@ -13,4 +13,4 @@
  * Takes char *file_name as input
  * Returns nothing
  */
-void read_ints(linked_list *ll, const char* file_name);
+void read_string(linked_list *ll, const char* file_name);
