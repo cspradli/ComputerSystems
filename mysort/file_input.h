@@ -9,7 +9,7 @@
 #include <string.h>
 #include "linked_list.h"
 /*
- * Puts the integers of files given as arguments into a linked list
+ * Puts the strings into a linked list via insertion add
  * Takes char *file_name as input
  * Returns nothing
  */
