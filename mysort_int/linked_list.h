@@ -13,7 +13,7 @@
  */
 
 typedef struct ELE {
-	char *data;
+	int data;
 	struct ELE *next;
 } node;
 
@@ -47,14 +47,8 @@ bool linked_list_destroy(linked_list *ll);
  * Returns true if succesfull
  * Returns false if ll is null or otherwise unsuccesfull
  */
-bool linked_list_add(linked_list *ll, char *input);
+bool linked_list_add(linked_list *ll, int input);
 
-/*
- * Add to linked list, based on alphabetical sort
- * Returns true if succesfull
- * Returns false if ll is null or otherwise unsuccesful
- */
-bool linked_list_insertion(linked_list *ll, char *key);
 
 /*
  * Delete element from linked list
@@ -69,7 +63,7 @@ bool linked_list_delete(linked_list *ll, node *key);
  * Takes ll and a string (char array)
  * Returns node with correct key
  */
-node *linked_list_search(linked_list *ll, char *input);
+node *linked_list_search(linked_list *ll, int input);
 
 /*
  * Gets the node based on position
@@ -78,6 +72,19 @@ node *linked_list_search(linked_list *ll, char *input);
  * Reuturns NULL if unsuccesful
  */
 node *linked_list_get(linked_list *ll, int position);
+
+/*
+ * Simple comparison helper function
+ */
+int compare_to(int i, int k);
+
+/*
+ * Sorts a linked list based on numeric value on insertion
+ * Takes linked list and key as arguments
+ * Returns true if succesfull, false if otherwise
+ */
+bool linked_list_insertion(linked_list *ll, int key);
+
 
 /*
  * Prints out entire list

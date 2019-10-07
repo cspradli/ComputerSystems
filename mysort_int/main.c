@@ -13,10 +13,10 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
 	    int counter = 0;
 	    for (counter = 1; counter < argc; counter++){
-		    printf("argv[%d]: %s \n", counter, argv[counter]);
-            read_string(ll, argv[counter]);
+		    read_ints(ll, argv[counter]);
+		    //printf("argv[%d]: %s \n", counter, argv[counter]);
 	    }
-        printf("Printed from linked list:   ");
+        printf("Printed from linked list\n");
         linked_list_print(ll);
     } else {
         printf("Error occured, please input file names as arguments\n");
