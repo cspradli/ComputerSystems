@@ -49,8 +49,8 @@ bool linked_list_add(linked_list *ll, char *key){
     }
 
     if (newn == NULL){ return false; }
-    newn->data = malloc(sizeof(key));
-    newn->data = key;
+    newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
+    strcpy(newn->data, key);
     newn->next = ll->head;
     ll->head = newn;
     ll->count++;
