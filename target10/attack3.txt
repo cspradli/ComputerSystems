@@ -1,0 +1,7 @@
+48 c7 c7 98 fd 66 55 c3 
+ff ff ff ff ff ff ff ff
+ff ff ff ff ff ff ff ff
+ff ff ff ff ff ff ff ff
+68 fd 66 55 00 00 00 00
+17 5c 55 55 55 55 00 00
+37 36 39 32 37 62 62 66
