@@ -1,0 +1,18 @@
+./count_secret_words moby.txt
+Reading file moby.txt
+File has 19238 lines
+Secret word 0 is 7 charcters long
+Number of lines with this word is: 203
+Number of lines with this word is: 343 (case insensitive)
+Secret word 1 is 4 charcters long
+Number of lines with this word is: 488
+Number of lines with this word is: 488 (case insensitive)
+Secret word 2 is 3 charcters long
+Number of lines with this word is: 12094
+Number of lines with this word is: 12380 (case insensitive)
+Secret word 3 is 5 charcters long
+Number of lines with this word is: 208
+Number of lines with this word is: 228 (case insensitive)
+Secret word 4 is 8 charcters long
+Number of lines with this word is: 36
+Number of lines with this word is: 37 (case insensitive)

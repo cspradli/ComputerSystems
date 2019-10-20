@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 /*
  * This program implements a linked list
@@ -14,6 +15,7 @@
 
 typedef struct ELE {
 	char *data;
+	int data_key;
 	struct ELE *next;
 } node;
 
