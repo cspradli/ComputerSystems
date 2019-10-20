@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "linked_list.h"
+
+void read_file(int cap, const char* file_name, linked_list *ll);
 /*
  * Puts the strings into a linked list via insertion add
  * Takes char *file_name as input
