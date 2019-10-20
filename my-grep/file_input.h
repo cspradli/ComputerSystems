@@ -16,4 +16,3 @@ void read_file(int cap, const char* file_name, char *word, linked_list *ll);
  * Takes char *file_name as input
  * Returns nothing
  */
-void read_string(linked_list *ll, const char* file_name);

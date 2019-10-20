@@ -32,7 +32,10 @@ void read_file(int cap, const char *file_name, char *search, linked_list *ll){
         }
 
         if (line_found > 0){
-            linked_list_insertion(ll, file_name);
+            //char *result = strcat(file_name, )
+            char *result;
+            sprintf(result, "%s: %d", file_name, word_found);
+            linked_list_insertion(ll, result);
         }
         
     }
