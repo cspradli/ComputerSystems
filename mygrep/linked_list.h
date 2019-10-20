@@ -50,6 +50,7 @@ bool linked_list_destroy(linked_list *ll);
 bool linked_list_add(linked_list *ll, char *input);
 
 
+
 /*
  * Delete element from linked list
  * Takes in ll and node with which to compare
@@ -72,6 +73,13 @@ node *linked_list_search(linked_list *ll, char *input);
  * Reuturns NULL if unsuccesful
  */
 node *linked_list_get(linked_list *ll, int position);
+
+/*
+ * Sorts a linked list based on numeric value on insertion
+ * Takes linked list and key as arguments
+ * Returns true if succesfull, false if otherwise
+ */
+bool linked_list_insertion(linked_list *ll, char* key);
 
 /*
  * Prints out entire list
