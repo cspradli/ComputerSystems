@@ -15,19 +15,18 @@ int main(int argc, char *argv[]) {
     int i = 0;
     char *checkI = "-i";
     if (argc > 1) {
-	    int counter = 0;
         if(strcmp(argv[1], checkI) == 0){
-            key = argv[1];
+            key = argv[2];
             capitol = 1;
-            i = 2;
+            i = 3;
         } else {
-            key = NULL;
+            key = argv[1];
             capitol = 0;
-            i = 1;
+            i = 2;
         }
         for (i; i < argc; i++){
-            printf("argv[%d]: %s\n", i, argv[counter]);
-            read_file(capitol, argv[i], key,ll);
+            printf("argv[%d]: %s\n", i, argv[i]);
+            read_file(capitol, argv[i], key, ll);
         }
         printf("Printed from linked list:   ");
         linked_list_print(ll);

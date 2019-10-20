@@ -61,7 +61,7 @@ bool linked_list_add(linked_list *ll, char *key){
 bool linked_list_insertion(linked_list *ll, char *key){
     node *newn;
     newn = malloc(sizeof(node));
-
+    printf("Inserting %s\n", key);
     if (ll == NULL){
         free(newn);
         return false;
