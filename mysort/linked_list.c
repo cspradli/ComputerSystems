@@ -27,7 +27,6 @@ bool linked_list_destroy(linked_list *ll){
 
         while (current != NULL){
             next = current->next;
-	        free(current->data);
             free(current);
             current = next;
         }
@@ -48,56 +47,12 @@ bool linked_list_add(linked_list *ll, int key){
         return false;
     }
 
-    if (newn == NULL){ return false; }
-    newn->data = malloc(sizeof(key));
-    newn->data = key
+    if (newn == NULL) return false;
+    newn->data = key;
     newn->next = ll->head;
     ll->head = newn;
     ll->count++;
     return true;
-}
-
-
-bool linked_list_insertion(linked_list *ll, char *key){
-    node *newn;
-    newn = malloc(sizeof(node));
-
-    if (ll == NULL){
-        free(newn);
-        return false;
-    }
-    
-    if (newn == NULL) return false;
-    //malloc needed memory for string
-    newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
-    newn->data = key
-
-    if (ll->head == NULL){
-        ll->head = newn;
-        ll->count++;
-        return true;
-    } else if(strcmp(newn->data, ll->head->data) < 0) {
-        newn->next = ll->head;
-        ll->head = newn;
-        return true;
-    } else {
-        node *after = ll->head->next;
-        node *before = ll->head;
-
-        while (after != NULL){
-            if (strcmp(newn->data, after->data) < 0) break;
-            before = after;
-            after = after->next;
-        }
-
-        newn->next = before->next;
-        before->next = newn;
-        return true;
-    }
-    free(newn->data);
-    free(newn);
-    return false;
-
 }
 
 
@@ -108,19 +63,18 @@ bool linked_list_delete(linked_list *ll, node *key){
     tempToFree = ll->head;
 
     //checks the head for compatability
-    if (tempToFree != NULL && strcmp(tempToFree->data, key->data)==0){
+    if (tempToFree != NULL && (tempToFree->data == key->data)){
         ll->head = ll->head->next;
-	    free(tempToFree->data);
         free(tempToFree);
         ll->count--;
         return true;
     }
     
-    while (tempToFree != NULL && strcmp(tempToFree->data, key->data) != 0){
+    while (tempToFree != NULL && (tempToFree->data != key->data)){
         previous = tempToFree;
         tempToFree = tempToFree->next;
 
-        if (strcmp(tempToFree->data, key->data) == 0){
+        if (tempToFree->data == key->data){
             previous->next = tempToFree->next;
             free(tempToFree);
             ll->count--;
@@ -131,8 +85,6 @@ bool linked_list_delete(linked_list *ll, node *key){
 
     if(tempToFree == NULL)  return false;
     previous->next = tempToFree->next;
-    free(tempToFree->data);
-    free(previous->data);
     free(tempToFree);
     free(previous);
     return false;
@@ -154,29 +106,63 @@ node *linked_list_get(linked_list *ll, int position){
     return current=NULL;
 }
 
-node *linked_list_search(linked_list *ll, char *key){
+node *linked_list_search(linked_list *ll, int key){
     node *current = NULL;
-    if (ll == NULL || ll->count == 0){ return current; }
+    if (ll == NULL || ll->count == 0) return current;
     current = ll->head;
-
     while (current != NULL){
-        if(strcmp(current->data, key) == 0){
-            return current;
-        }
+        if(current->data == key) return current;
         current = current->next;
     }
-
     return current;
+}
+
+int compare_to(int i, int k){
+    return i-k;
+}
+
+bool linked_list_insertion(linked_list *ll, int key){
+    node *newn;
+    newn = malloc(sizeof(node));
+
+    if (ll == NULL) free(newn);
+    if (newn == NULL) return false;
+    //malloc needed memory for string
+    newn->data = key;
+
+    if (ll->head == NULL){
+        ll->head = newn;
+        ll->count++;
+        return true;
+    } else if(compare_to(newn->data, ll->head->data) < 0) {
+        newn->next = ll->head;
+        ll->head = newn;
+        return true;
+    } else {
+        node *after = ll->head->next;
+        node *before = ll->head;
+
+        while (after != NULL){
+            if (compare_to(newn->data, after->data) < 0) break;
+            before = after;
+            after = after->next;
+        }
+
+        newn->next = before->next;
+        before->next = newn;
+        return true;
+    }
+    free(newn);
+    return false;
+
 }
 
 void linked_list_print(linked_list *ll){ 
     node *current = ll->head;
-
     while (current != NULL){ 
-     printf("%s ", current->data); 
+     printf("%d ", current->data); 
      current = current->next; 
     }
-
     printf("\n"); 
 } 
 
