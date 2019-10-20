@@ -6,11 +6,10 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "linked_list.h"
 /*
- * Puts the strings into a linked list via insertion add
+ * Puts the integers of files given as arguments into a linked list
  * Takes char *file_name as input
  * Returns nothing
  */
-void read_string(linked_list *ll, const char* file_name);
+void read_ints(linked_list *ll, const char* file_name);

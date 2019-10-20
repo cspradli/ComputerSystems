@@ -6,6 +6,10 @@ Disassembly of section .text:
 
 0000000000000000 <.text>:
    0:	48 c7 c7 90 fd 66 55 	mov    $0x5566fd90,%rdi
+<<<<<<< HEAD
    7:	48 2b 24 25 28 00 00 	sub    0x28,%rsp
    e:	00 
    f:	c3                   	retq   
+=======
+   7:	c3                   	retq   
+>>>>>>> c36617692e67fa45d9e8f6bb58ac9727d327f2c4
