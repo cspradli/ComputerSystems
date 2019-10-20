@@ -15,7 +15,6 @@
 
 typedef struct ELE {
 	char *data;
-	int data_key;
 	struct ELE *next;
 } node;
 

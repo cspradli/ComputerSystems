@@ -25,9 +25,14 @@ void read_file(int cap, const char *file_name, char *search, linked_list *ll){
             }
             else if (cap == 1){
                 if (strcasestr(line,search) != NULL){
-
+                    line_found++;
+                    word_found++;
                 }
             }
+        }
+
+        if (line_found > 0){
+            linked_list_insertion(ll, file_name);
         }
         
     }
