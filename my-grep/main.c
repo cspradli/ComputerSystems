@@ -10,7 +10,7 @@
 int main(int argc, char *argv[]) {
     linked_list *ll;
     ll = create_linked_list();
-    char *key;
+    char *key = NULL;
     int capitol = 0;
     int i = 0;
     char *checkI = "-i";
@@ -25,10 +25,10 @@ int main(int argc, char *argv[]) {
             i = 2;
         }
         for (i; i < argc; i++){
-            printf("argv[%d]: %s\n", i, argv[i]);
+            //printf("argv[%d]: %s", i, argv[i]);
             read_file(capitol, argv[i], key, ll);
         }
-        printf("Printed from linked list:   ");
+        printf("Printed from linked list:\n");
         linked_list_print(ll);
     } else {
         printf("Error occured, please input file names as arguments\n");

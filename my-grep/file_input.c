@@ -4,9 +4,7 @@
  * Author: Caleb Spradlin
  * Date: 09/28/19
  */
-
 #include "file_input.h"
-#define MAX_LINE 1024
 
 void read_file(int cap, const char *file_name, char *search, linked_list *ll){
     FILE *in_file = fopen(file_name, "r");
@@ -20,14 +18,12 @@ void read_file(int cap, const char *file_name, char *search, linked_list *ll){
         {
             if (cap == 0){
                 if (strstr(line, search) != NULL){
-                    printf("Found no case\n");
                     line_found++;
                     word_found++;
                 }
             }
             else if (cap == 1){
                 if (strcasestr(line,search) != NULL){
-                    printf("found case\n");
                     line_found++;
                     word_found++;
                 }
@@ -36,13 +32,11 @@ void read_file(int cap, const char *file_name, char *search, linked_list *ll){
 
         if (line_found > 0){
             //char *result = strcat(file_name, )
-            char *result;
+            char result[256];
             sprintf(result, "%s: %d", file_name, word_found);
-            printf(" Whats going in the linked list: %s\n", result);
             linked_list_insertion(ll, result);
         }
         
     }
-    printf("\n");
     fclose(in_file);
 }
