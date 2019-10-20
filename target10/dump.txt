@@ -1,0 +1,12 @@
+
+arg_3.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:	48 c7 c7 90 fd 66 55 	mov    $0x5566fd90,%rdi
+   7:	49 bc 17 5c 55 55 55 	movabs $0x555555555c17,%r12
+   e:	55 00 00 
+  11:	41 54                	push   %r12
+  13:	c3                   	retq   

