@@ -23,12 +23,13 @@ int main(int argc, char**argv){
 	}else{
 		//read in each file from the command line
 		for(i=1; i<argc; i++){
-            		printf("Reading file %s\n",argv[i]);
+            printf("Reading file %s\n",argv[i]);
 			fp = fopen(argv[i],"r");
+			
 			if(fp){
 				while(fgets(buffer,100,fp)){
 					len = strlen(buffer);
-                    			if(buffer[len-1] == '\n') buffer[len-1] = '\0';//removes the newline
+                    if(buffer[len-1] == '\n') buffer[len-1] = '\0';//removes the newline
 					linkedlist_add(ll,buffer);
 					//linkedlist_add__insert_sort(ll,buffer);
 				}

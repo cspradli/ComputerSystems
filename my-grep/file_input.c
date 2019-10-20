@@ -6,29 +6,29 @@
  */
 
 #include "file_input.h"
+#define MAX_LINE 1024
 
-
-void read_file(int cap, const char *file_name, linked_list *ll){
-    
-}
-void read_string(linked_list *ll, const char *file_name){
-    FILE* in_file = fopen(file_name, "r");
-    char buffer[100];
-    int len;
-    //fscanf(in_file, "%s", &s[0]);
+void read_file(int cap, const char *file_name, char *search, linked_list *ll){
+    FILE *in_file = fopen(file_name, "r");
+    char *line = NULL;
+    int line_found, word_found;
+    size_t len = 0;
+    ssize_t read;
     if (in_file){
-        while(fgets(buffer, 100, in_file)){
-            len = strlen(buffer);
-            if (buffer[len-1] == '\n') buffer[len-1] = '\0';
+        while ((read = getline(&line, &len, in_file)) != -1)
+        {
+            if (cap == 0){
+                if (strstr(line, search) != NULL){
+                    line_found++;
+                    word_found++;
+                }
+            }
+            else if (cap == 1){
+                if (strcasestr(line,search) != NULL){
 
+                }
+            }
         }
+        
     }
-    while (!feof(in_file)) {
-        //printf("%s ", s);
-        //linked_list_insertion(ll, s);
-        //fscanf(in_file, "%s", &s[0]);
-    }
-    printf("\n");
-    fclose(in_file);
-    
 }
