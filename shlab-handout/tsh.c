@@ -55,14 +55,14 @@ struct job_t jobs[MAXJOBS]; /* The job list */
 /* Function prototypes */
 
 /* Here are the functions that you will implement */
-void eval(char *cmdline);
-int builtin_cmd(char **argv);
-void do_bgfg(char **argv);
-void waitfg(pid_t pid);
+void eval(char *cmdline); //done
+int builtin_cmd(char **argv); //todo
+void do_bgfg(char **argv); //todo
+void waitfg(pid_t pid); //todo
 
-void sigchld_handler(int sig);
-void sigtstp_handler(int sig);
-void sigint_handler(int sig);
+void sigchld_handler(int sig); //done
+void sigtstp_handler(int sig); //done
+void sigint_handler(int sig); //done
 
 /* Here are helper routines that we've provided for you */
 int parseline(const char *cmdline, char **argv); 
@@ -255,7 +255,21 @@ int parseline(const char *cmdline, char **argv)
  *    it immediately.  
  */
 int builtin_cmd(char **argv) 
-{
+{	
+	pid_t pid = getpid();
+	if(!strcmp(argv[0], "quit")){
+		exit(0);
+	}
+	if(!strcmp(argv[0], "do_bgfg")){
+		do_bgfg(argv);
+	}
+	if(!strcmp(argv[0], "waitfg")){
+		waitfg(pid);
+	}
+	if(!strcmp(argv[0], "&")){
+		return 1;
+	}
+	return 0;
     return 0;     /* not a builtin command */
 }
 
