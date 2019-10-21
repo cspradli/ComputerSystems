@@ -256,21 +256,22 @@ int parseline(const char *cmdline, char **argv)
  */
 int builtin_cmd(char **argv) 
 {	
-	pid_t pid = getpid();
 	if(!strcmp(argv[0], "quit")){
 		exit(0);
 	}
-	if(!strcmp(argv[0], "do_bgfg")){
-		do_bgfg(argv);
-	}
-	if(!strcmp(argv[0], "waitfg")){
-		waitfg(pid);
-	}
-	if(!strcmp(argv[0], "&")){
+	if(!strcmp(argv[0], "jobs")){
 		return 1;
 	}
-	return 0;
-    return 0;     /* not a builtin command */
+	if(!strcmp(argv[0], "bg")){
+		return 1;
+	}
+	if(!strcmp(argv[0], "fg")){
+		return 1;
+	}
+	if(!strcmp(argv[0], "kill")){
+		return 1;
+	}
+	return 0; /* not a builtin command */
 }
 
 /* 
