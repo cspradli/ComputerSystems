@@ -260,15 +260,15 @@ int builtin_cmd(char **argv)
 		exit(0);
 	}
 	if(!strcmp(argv[0], "jobs")){
+		listjobs(jobs);
 		return 1;
 	}
 	if(!strcmp(argv[0], "bg")){
+		do_bgfg(argv);	
 		return 1;
 	}
 	if(!strcmp(argv[0], "fg")){
-		return 1;
-	}
-	if(!strcmp(argv[0], "kill")){
+		do_bgfg(argv);
 		return 1;
 	}
 	return 0; /* not a builtin command */
@@ -279,7 +279,46 @@ int builtin_cmd(char **argv)
  */
 void do_bgfg(char **argv) 
 {
-    return;
+	struct job_t *job = NULL;
+	pid_t pid;
+
+	//getjobpid(jobs, pid)
+	if (argv[1] == NULL){
+		printf("Usage: bg <cmd>\n");
+		return;
+	}
+
+	//check if pid
+	if(isdigit(argv[1][0])){
+		pid = atoi(argv[1]);
+		if(!(job = getjobpid(jobs, pid))){
+			printf("No job with pid %d\n", pid);
+			return;
+		}
+	}
+	if(argv[1][0] == '%'){
+		int jid = atoi(&argv[1][1]);
+		if(!(job = getjobjid(jobs, jid))){
+			printf("No jobs with jid %d\n", jid);
+			return;
+		}
+
+	}
+	kill(job->pid, SIGCONT);
+	if(!strcmp(argv[0], "fg")){
+		//TODO fg
+		//tcsetpgrp(
+		job->state = FG;
+		waitfg(job->pid);
+		
+		return;
+	}
+	if(!strcmp(argv[0], "bg")){
+		//TODO bg
+		//jobp
+		return;
+	}
+	return;
 }
 
 /* 
@@ -287,7 +326,16 @@ void do_bgfg(char **argv)
  */
 void waitfg(pid_t pid)
 {
-    return;
+
+	//while(fgpid(jobs)==pid){}
+	struct job_t *job;
+	job = getjobpid(jobs, pid);
+
+	while(job != NULL && (job->state == FG)){
+		waitpid(job->pid);
+		sleep(1);
+	}
+	return;
 }
 
 /*****************
