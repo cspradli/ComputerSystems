@@ -169,12 +169,20 @@ void eval(char *cmdline)
 	char buf[MAXLINE];
 	int bg;
 	pid_t pid;
-
+	sigset_t mask;
 	strcpy(buf, cmdline);
 	bg = parseline(buf, argv);
+
 	if (argv[0] == NULL) return;
 	if(!builtin_cmd(argv)) {
+		sigemptyset(&mask);
+		sigaddset(&mask, SIGCHLD);
+		sigprocmask(SIG_BLOCK, &mask, NULL);
 		if ((pid = fork()) == 0){
+			
+			setpgid(0,0);
+			sigprocmask(SIG_UNBLOCK, &mask, NULL);
+			
 			if (execve(argv[0], argv, environ) < 0){
 				printf("%s: Command not found.\n", argv[0]);
 				exit(0);
@@ -182,12 +190,19 @@ void eval(char *cmdline)
 		}
 
 		if (!bg) {
-			int status = 0;
-			if (waitpid(pid, &status, 0) < 0){
-				unix_error("Waitfg: waitpid error");
+			if(addjob(jobs, pid, FG, cmdline)){
+				sigprocmask(SIG_UNBLOCK, &mask, NULL);
+				waitfg(pid);
+			} else{ 
+				kill(-pid, SIGINT); 
 			}
 		} else {
-			printf("%d %s", pid, cmdline);
+			if(addjob(jobs, pid, BG, cmdline)){
+				sigprocmask(SIG_UNBLOCK, &mask, NULL);
+				printf("[%d] (%d) %s", pid2jid(pid), pid, cmdline);
+			} else { 
+				kill(-pid, SIGINT);
+			}
 		}
 	}
 	return;
@@ -304,18 +319,25 @@ void do_bgfg(char **argv)
 		}
 
 	}
-	kill(job->pid, SIGCONT);
+	kill(-job->pid, SIGCONT);
+
 	if(!strcmp(argv[0], "fg")){
 		//TODO fg
 		//tcsetpgrp(
 		job->state = FG;
 		waitfg(job->pid);
+
+		/*if(job->state != ST){
+			deletejob(jobs, job->pid);
+		}*/
 		
 		return;
 	}
 	if(!strcmp(argv[0], "bg")){
 		//TODO bg
 		//jobp
+		job->state = BG;
+		printf("[%d](%d)%s", job->jid, job->pid, job->cmdline);
 		return;
 	}
 	return;
@@ -328,13 +350,11 @@ void waitfg(pid_t pid)
 {
 
 	//while(fgpid(jobs)==pid){}
-	struct job_t *job;
-	job = getjobpid(jobs, pid);
-
-	while(job != NULL && (job->state == FG)){
-		waitpid(job->pid);
+	//int status;
+	while(pid == fgpid(jobs)){
 		sleep(1);
 	}
+	
 	return;
 }
 
@@ -374,13 +394,14 @@ void sigint_handler(int sig)
  *     foreground job by sending it a SIGTSTP.  
  */
 void sigtstp_handler(int sig) 
-{
+{	
+	pid_t pid = fgpid(jobs);
 	sigset_t mask;
 	sigemptyset(&mask);
 	sigaddset(&mask, SIGTSTP);
 	sigprocmask(SIG_UNBLOCK, &mask, NULL);
 	signal(SIGTSTP, SIG_DFL);
-	kill(getpid(), SIGTSTP);
+	kill(-pid, SIGTSTP);
 	signal(SIGTSTP, sigtstp_handler);
 }
 
