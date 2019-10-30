@@ -10,9 +10,12 @@
 #include <string.h>
 #include "linked_list.h"
 
-void read_file(int cap, const char* file_name, char *word, linked_list *ll);
-/*
- * Puts the strings into a linked list via insertion add
- * Takes char *file_name as input
+
+/* 
+ * Reads in each file listed line by line and searches for the keyword. If it is present, bump up the counters.
+ * Parameters cap to check capitolization, file_name of the file to look through, the key search word,
+ * linked list to add the filename and how many times
  * Returns nothing
  */
+
+void read_file(int cap, const char* file_name, char *word, linked_list *ll);

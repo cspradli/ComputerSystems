@@ -2,7 +2,7 @@
  * File input function implementations for linked list implementation and sorting
  * Goes in conjunction with linked_list files
  * Author: Caleb Spradlin
- * Date: 09/28/19
+ * Date: 10/15/19
  */
 #include "file_input.h"
 
@@ -16,13 +16,13 @@ void read_file(int cap, const char *file_name, char *search, linked_list *ll){
     if (in_file){
         while ((read = getline(&line, &len, in_file)) != -1)
         {
-            if (cap == 0){
+            if (cap == 1){
                 if (strstr(line, search) != NULL){
                     line_found++;
                     word_found++;
                 }
             }
-            else if (cap == 1){
+            else if (cap == 0){
                 if (strcasestr(line,search) != NULL){
                     line_found++;
                     word_found++;

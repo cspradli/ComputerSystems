@@ -15,10 +15,15 @@ int main(int argc, char *argv[]) {
     int i = 0;
     char *checkI = "-i";
     if (argc > 1) {
+
+	//check for -i arg
         if(strcmp(argv[1], checkI) == 0){
-            key = argv[2];
+            //key search word
+	    key = argv[2];
+	    //check for Capitolization
             capitol = 1;
-            i = 3;
+            //bump i up to start for loop
+	    i = 3;
         } else {
             key = argv[1];
             capitol = 0;

@@ -1,7 +1,7 @@
 /* 
  * tsh - A tiny shell program with job control
  * 
- * <Put your name and login ID here>
+ * <caleb spradlin | cspradli>
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -310,7 +310,7 @@ void do_bgfg(char **argv)
 
 	//getjobpid(jobs, pid)
 	if (argv[1] == NULL){
-		printf("Usage: bg <cmd>\n");
+		printf("Usage: bg or fg <cmd>\n");
 		return;
 	}
 
@@ -330,26 +330,23 @@ void do_bgfg(char **argv)
 		}
 
 	}
+	
+	if(!(isdigit(argv[1][0])) && !(argv[1][0] == '%')){
+		printf("Argument 2 must be jid or pid\n");
+		return;
+	}
+
 	kill(-job->pid, SIGCONT);
 
 	if(!strcmp(argv[0], "fg")){
-		//TODO fg
-		//tcsetpgrp(
 		job->state = FG;
 		kill(-job->pid, SIGCONT);
 		waitfg(job->pid);
-		//printf("[%d] (%d) %s", job->jid, job->pid, job->cmdline);
-		/*if(job->state != ST){
-			deletejob(jobs, job->pid);
-		}*/
 		
 	}
 	if(!strcmp(argv[0], "bg")){
-		//TODO bg
-		//jobp
 		job->state = BG;
 		kill(-job->pid, SIGCONT);
-		//printf("[%d](%d)%s", job->jid, job->pid, job->cmdline);
 	}
 	return;
 }
@@ -360,16 +357,9 @@ void do_bgfg(char **argv)
 void waitfg(pid_t pid)
 {
 
-	//while(fgpid(jobs)==pid){}
-	//int status;
 	while(fgpid(jobs)){
 		sleep(1);
 	}
-	/*
-	while(pid == fgpid(jobs)){
-		sleep(1);
-	}*/
-	
 	return;
 }
 
@@ -418,18 +408,8 @@ void sigchld_handler(int sig)
 				kill(-pid, WSTOPSIG(status));
 			}
 		}
-		/*
-		else if (WIFEXITED(status)){
-			sigprocmask(SIG_BLOCK, &mask, &prev);
-			deletejob(jobs, pid);
-			sigprocmask(SIG_SETMASK, &prev, NULL);
-		}*/
 			
 	}
-	/*if (WIFSIGNALED(signal) && WTERMSIG(status) == SIGINT){
-	}*/
-	/*
-	while((pid = wait(NULL)) > 0) {}*/
 	errno = saved_err;
 	//printf("\n");
 	return;
