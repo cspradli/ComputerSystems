@@ -109,7 +109,9 @@ void philosopher_algorithm(int num){
 
     while(1){ // basic algorithm
         pickup_chopstick( chopstick1 );
+        printf("Got left chopstick\n");
         pickup_chopstick( chopstick2 );
+        printf("Got left chopstick\n");
         eat_from_plate();
         setdown_chopstick( chopstick1 );
         setdown_chopstick( chopstick2 );
@@ -118,8 +120,19 @@ void philosopher_algorithm(int num){
 
 }
 
+void philosopher_algorithm_cr(int num){
+    int chopstick1 = chopsticks[num];
+    int chopstick2 = chopsticks[(num+1)%5];
 
+    pid_t pid = getpid();
+    printf("Child[%i] starting corrected philosopher_algorithm(%i)\n", pid, num);
+    fflush(stdout);
 
+    while(1){
+        //TODO finish correct algorithm
+    }
+
+}
 
 
 
