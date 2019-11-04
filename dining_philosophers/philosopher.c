@@ -65,7 +65,7 @@ void sigchild_handler(int sig_num){
 }
 
 
-void create_5_philosophers(){
+void create_5_philosophers(int argc){
     // initialize chopsticks
     int i;
     for(i=0;i<5;i++){
@@ -80,7 +80,13 @@ void create_5_philosophers(){
     for(i=0;i<5;i++){
         pid_t temp = fork();
         if (temp == 0){
-            philosopher_algorithm(i);
+            if (argc > 1){ //check for # of args
+                printf("Using corrected algorithm\n");
+                philosopher_algorithm_cr(i);
+            } else {
+                printf("Using deadlock algorithm\n");
+                philosopher_algorithm(i);
+            }
             exit(0);
         }else{
             philosopher_pid[i] = temp;
@@ -130,6 +136,15 @@ void philosopher_algorithm_cr(int num){
 
     while(1){
         //TODO finish correct algorithm
+        /*
+            if LEFT || RIGHT != E
+                pid_state = E
+                wait()
+                pickup_chop(chop1)
+
+
+
+        */
     }
 
 }
