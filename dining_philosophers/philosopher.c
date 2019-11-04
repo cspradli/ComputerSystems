@@ -8,9 +8,12 @@
 #include <unistd.h>
 #include <errno.h>
 
+#define EATING 1
+#define HUNGRY 1
+#define THINKING 0
 int chopsticks[5];
 pid_t philosopher_pid[5];
-
+int state[5];
 int eat_count = 0;
 int think_count = 0;
 
@@ -31,7 +34,7 @@ int setdown_chopstick(int which_stick){
     return semaphore_unlock(which_stick);
 }
 
-void eat_from_plate(){
+void eat_from_plate() //check for # of args{
     pid_t pid = getpid();
     printf("Child[%i] eating\n",pid);
     fflush(stdout);
@@ -97,6 +100,15 @@ void create_5_philosophers(int argc){
     }
 }
 
+
+void test(int num){
+    //if neighbors aren't eating then eat 
+    // next philosopher eats 
+    //
+
+
+
+}
 void kill_5_philosophers(){
     int i;
     for(i=0;i<5;i++){
