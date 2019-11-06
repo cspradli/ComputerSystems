@@ -142,40 +142,32 @@ void philosopher_algorithm(int num){
 }
 
 void philosopher_algorithm_cr(int i){
-    int chopstick1 = chopsticks[i];
-    int chopstick2 = chopsticks[(i+1)%5];
+    //int chopstick1 = chopsticks[i];
+    //int chopstick2 = chopsticks[(i+1)%5];
 
     pid_t pid = getpid();
     printf("Child[%i] starting corrected philosopher_algorithm(%i)\n", pid, i);
     fflush(stdout);
 
     while(1){
-        //TODO finish correct algorithm
-        /*
-            if LEFT || RIGHT != E
-                pid_state = E
-                wait()
-                pickup_chop(chop1
-
-        */
-        think();
         int left = i;
         int right = (i + 1) % N;
         if (left > right){
             left = right;
             right = left + 1;
         }
+        int chopstick1 = chopsticks[left];
+        int chopstick2 = chopsticks[right];
 
         pickup_chopstick( chopstick1 );
         printf("Philosopher[%i] picked up left chopstick\n", i);
         pickup_chopstick( chopstick2 );
         printf("Philosopher[%i] picked up right chopstick\n", i);
-        state[i] = EATING;
         eat_from_plate();
 
         setdown_chopstick(chopstick1);
         setdown_chopstick(chopstick2);
-
+        think();
 
     }
 
