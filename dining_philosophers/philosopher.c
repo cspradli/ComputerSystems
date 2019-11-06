@@ -9,13 +9,9 @@
 #include <errno.h>
 
 #define N 5
-#define EATING 1
-#define HUNGRY 1
-#define THINKING 0
 
 int chopsticks[5];
 pid_t philosopher_pid[5];
-int state[5];
 int eat_count = 0;
 int think_count = 0;
 
@@ -88,9 +84,11 @@ void create_5_philosophers(int argc){
             if (argc > 1){ //check for # of args
                 printf("Using corrected algorithm\n");
                 printf("%i\n", i);
+                fflush(stdout);
                 philosopher_algorithm_cr(i);
             } else {
                 printf("Using deadlock algorithm\n");
+                fflush(stdout);
                 philosopher_algorithm(i);
             }
             exit(0);
@@ -141,34 +139,36 @@ void philosopher_algorithm(int num){
 
 }
 
-void philosopher_algorithm_cr(int i){
+void philosopher_algorithm_cr(int num){
     //int chopstick1 = chopsticks[i];
     //int chopstick2 = chopsticks[(i+1)%5];
 
     pid_t pid = getpid();
-    printf("Child[%i] starting corrected philosopher_algorithm(%i)\n", pid, i);
+    printf("Child[%i] starting corrected philosopher_algorithm(%i)\n", pid, num);
     fflush(stdout);
+    int left = num;
+    int right = (num + 1) % N;
+    
+    if (left > right){
+        left = right;
+        right = left + 1;
+    }
 
+    int chopstick1 = chopsticks[left];
+    int chopstick2 = chopsticks[right];
+    
     while(1){
-        int left = i;
-        int right = (i + 1) % N;
-        if (left > right){
-            left = right;
-            right = left + 1;
-        }
-        int chopstick1 = chopsticks[left];
-        int chopstick2 = chopsticks[right];
 
         pickup_chopstick( chopstick1 );
-        printf("Philosopher[%i] picked up left chopstick\n", i);
+        printf("Philosopher[%i] picked up left chopstick\n", num);
+        fflush(stdout);
         pickup_chopstick( chopstick2 );
-        printf("Philosopher[%i] picked up right chopstick\n", i);
+        printf("Philosopher[%i] picked up right chopstick\n", num);
+        fflush(stdout);
         eat_from_plate();
-
         setdown_chopstick(chopstick1);
         setdown_chopstick(chopstick2);
         think();
-
     }
 
 }
