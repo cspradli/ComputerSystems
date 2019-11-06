@@ -8,9 +8,11 @@
 #include <unistd.h>
 #include <errno.h>
 
+#define N 5
 #define EATING 1
 #define HUNGRY 1
 #define THINKING 0
+
 int chopsticks[5];
 pid_t philosopher_pid[5];
 int state[5];
@@ -34,7 +36,7 @@ int setdown_chopstick(int which_stick){
     return semaphore_unlock(which_stick);
 }
 
-void eat_from_plate() //check for # of args{
+void eat_from_plate(){ //check for # of args{
     pid_t pid = getpid();
     printf("Child[%i] eating\n",pid);
     fflush(stdout);
@@ -85,6 +87,7 @@ void create_5_philosophers(int argc){
         if (temp == 0){
             if (argc > 1){ //check for # of args
                 printf("Using corrected algorithm\n");
+                printf("%i\n", i);
                 philosopher_algorithm_cr(i);
             } else {
                 printf("Using deadlock algorithm\n");
@@ -138,12 +141,12 @@ void philosopher_algorithm(int num){
 
 }
 
-void philosopher_algorithm_cr(int num){
-    int chopstick1 = chopsticks[num];
-    int chopstick2 = chopsticks[(num+1)%5];
+void philosopher_algorithm_cr(int i){
+    int chopstick1 = chopsticks[i];
+    int chopstick2 = chopsticks[(i+1)%5];
 
     pid_t pid = getpid();
-    printf("Child[%i] starting corrected philosopher_algorithm(%i)\n", pid, num);
+    printf("Child[%i] starting corrected philosopher_algorithm(%i)\n", pid, i);
     fflush(stdout);
 
     while(1){
@@ -152,11 +155,28 @@ void philosopher_algorithm_cr(int num){
             if LEFT || RIGHT != E
                 pid_state = E
                 wait()
-                pickup_chop(chop1)
-
-
+                pickup_chop(chop1
 
         */
+        think();
+        int left = i;
+        int right = (i + 1) % N;
+        if (left > right){
+            left = right;
+            right = left + 1;
+        }
+
+        pickup_chopstick( chopstick1 );
+        printf("Philosopher[%i] picked up left chopstick\n", i);
+        pickup_chopstick( chopstick2 );
+        printf("Philosopher[%i] picked up right chopstick\n", i);
+        state[i] = EATING;
+        eat_from_plate();
+
+        setdown_chopstick(chopstick1);
+        setdown_chopstick(chopstick2);
+
+
     }
 
 }
