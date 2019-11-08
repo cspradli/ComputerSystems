@@ -36,6 +36,14 @@ int semaphore_lock(int lock_num){
     return semop(lock_num, &op, 1);
 }
 
+int sem_lock(int lock_num){
+    struct sembuf op;
+    op.sem_num = 0;
+    op.sem_op = -1;
+    op.sem_flg = IPC_NOWAIT;
+    return semop(lock_num, &op, 1);
+
+}
 int semaphore_unlock(int lock_num){
     struct sembuf op;
     op.sem_num = 0;
@@ -43,6 +51,15 @@ int semaphore_unlock(int lock_num){
     op.sem_flg = 0;
 
     return semop(lock_num, &op, 1);
+}
+
+int sem_unlock(int lock_num){
+    struct sembuf op;
+    op.sem_num = 0;
+    op.sem_op = 1;
+    op.sem_flg = 0;
+    return semop(lock_num, &op, 1);
+    
 }
 
 int create_semaphore(int sem_count){

@@ -9,6 +9,8 @@
 #include <errno.h>
 
 #define N 5
+#define HUNGRY 0
+#define THINKING 1
 
 int chopsticks[5];
 pid_t philosopher_pid[5];
