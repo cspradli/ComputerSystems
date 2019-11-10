@@ -6,7 +6,7 @@
  **/
 
 
-long int calculate_pi(int iter);
+double calculate_pi(int iter);
 
 double get_random(double max, double min);
 

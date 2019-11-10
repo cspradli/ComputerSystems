@@ -17,16 +17,20 @@
 #include <sys/wait.h>
 #include <errno.h>
 
-long int calculate_pi(int iter){
-    long int num_darts = 0;
+double calculate_pi(int iter){
+    double num_darts = 0;
+    printf("in calc\n");
     for (int i = 0; i < iter; i++){
         double x = get_random(-1.0, 1.0);
+        printf("x = %f\n", x);
         double y = get_random(-1.0, 1.0);
+        printf("y = %f\n", y);
         double distance_sq = x*x + y*y;
         if (distance_sq <= 1){
             num_darts++;
         }
     }
+    printf("num darts %f\n", num_darts);
     return num_darts;
 }
 
