@@ -69,30 +69,35 @@ void http_handle(int connect_fd){
     /**
      * TODO handle the http
      **/
-    char *buffer = NULL, *uri = NULL, *version = NULL, *method = NULL, *end_head = NULL, *path = NULL;
+    char *buffer = NULL, *method = NULL, *end_head = NULL, *path = NULL;
     int endserver;
     rio_t temp, serv;
     Rio_readinitb(&temp, connect_fd);
     Rio_readlineb(&temp, buffer, MAXLINE);
     request *parse = parse_request(buffer);
-
+    if(strstr(parse->protocol, "GET")){
+        printf("Protocol other than GET was used");
+        return;
+    }
     build_http(end_head, parse->host, parse->port, path, &temp);
     endserver = conn_end(parse->host, parse->port, method);
     if (endserver < 0) printf("Error in endserver\n");
     Rio_readinitb(&serv, endserver);
     Rio_writen(endserver,end_head, strlen(end_head));
     size_t message_size;
-    while ((message_size = Rio_readlineb) !=0)
+    while ((message_size = Rio_readlineb(&serv, buffer, MAXLINE)) !=0)
     {
-        /* code */
+        Rio_writen(connect_fd, buffer, message_size);
     }
-    
+    Close(connect_fd);
 }
 
 void build_http(char *uri, char *host, int port, char *path, rio_t *temp){
     /**
      * TODO build the http header
      **/
+
+    
 }
 
 int conn_end(char *host, int port, char *http){
@@ -123,6 +128,8 @@ request *parse_request(char *str){
 
     if(strstr(host_port, ":")){
         sscanf(host_port, "%[^:]%s", host, port_c);
+    } else {
+        sprintf(port_c, "%d", port);
     }
     new_req->protocol = protocol;
     new_req->host = host;
