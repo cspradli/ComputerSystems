@@ -9,7 +9,8 @@
  * Struct so the parser can return multiple different strings
  */
 typedef struct{
-    char *host_port;
+    int port;
+    char *host;
     char *path;
     char *protocol;
 } request;
@@ -22,12 +23,12 @@ void http_handle(int connect_fd);
 /**
  * Builds the http header from parsed request
  */
-void build_http(char *uri, char *host_port, char *path, rio_t *temp);
+void build_http(char *uri, char *host, int port, char *path, rio_t *temp);
 
 /**
  * Connect to the end server the client is attempting to reach
  */
-bool conn_end(char *host, int port, char *http);
+int conn_end(char *host, int port, char *http);
 
 /**
  * Parse the request with the given string
@@ -68,26 +69,43 @@ void http_handle(int connect_fd){
     /**
      * TODO handle the http
      **/
-    char *buffer = NULL, *uri = NULL, *version = NULL, *method = NULL, *end_head = NULL, *host = NULL, *path = NULL;
+    char *buffer = NULL, *uri = NULL, *version = NULL, *method = NULL, *end_head = NULL, *path = NULL;
+    int endserver;
     rio_t temp, serv;
     Rio_readinitb(&temp, connect_fd);
     Rio_readlineb(&temp, buffer, MAXLINE);
     request *parse = parse_request(buffer);
 
-    build_http(end_head, parse->host_port, path, &temp);
+    build_http(end_head, parse->host, parse->port, path, &temp);
+    endserver = conn_end(parse->host, parse->port, method);
+    if (endserver < 0) printf("Error in endserver\n");
+    Rio_readinitb(&serv, endserver);
+    Rio_writen(endserver,end_head, strlen(end_head));
+    size_t message_size;
+    while ((message_size = Rio_readlineb) !=0)
+    {
+        /* code */
+    }
+    
 }
 
-void build_http(char *uri, char *host_port, char *path, rio_t *temp){
+void build_http(char *uri, char *host, int port, char *path, rio_t *temp){
     /**
      * TODO build the http header
      **/
 }
 
-bool conn_end(char *host, int port, char *http){
-    return 0;
+int conn_end(char *host, int port, char *http){
+    char *port_s = NULL;
+    sprintf(port_s, "%d", port);
+    int ret = Open_clientfd(host, port_s);
+    return ret;
 }
 
 request *parse_request(char *str){
+    int port = 80;
+    char *port_c = NULL;
+    char *host = NULL;
     char *method = NULL, *url = NULL, *version = NULL, *protocol = NULL, *host_port = NULL, *path = NULL;
     request *new_req;
 
@@ -97,14 +115,18 @@ request *parse_request(char *str){
     }
 
     sscanf(str, "%s %s %s", method, url, version);
-
     if(!strstr(url, "://")){
         sscanf(url, "%[^:]//%[^/]%s", protocol, host_port, path);
     } else {
         sscanf(url, "%[^/]%s", host_port, path);
     }
+
+    if(strstr(host_port, ":")){
+        sscanf(host_port, "%[^:]%s", host, port_c);
+    }
     new_req->protocol = protocol;
-    new_req->host_port = host_port;
+    new_req->host = host;
+    new_req->port = atoi(port_c);
     new_req->path = path;
     
     return new_req;

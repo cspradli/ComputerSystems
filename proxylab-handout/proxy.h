@@ -7,7 +7,8 @@
 #include <stdbool.h>
 
 typedef struct{
-    char *uri;
+    int port;
+    char *host;
     char *path;
     char *protocol;
 } request;
@@ -17,6 +18,6 @@ void http_handle(int connect_fd);
 
 void build_http(char *uri, char *host, char *path, int *port);
 
-bool conn_end(char *host, int port, char *http);
+int conn_end(char *host, int port, char *http);
 
 request *parse_request(char *str);
