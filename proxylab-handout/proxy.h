@@ -9,6 +9,7 @@
 typedef struct{
     char *uri;
     char *path;
+    char *protocol;
 } request;
 
 

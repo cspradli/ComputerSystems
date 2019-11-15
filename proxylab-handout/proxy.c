@@ -68,7 +68,7 @@ void http_handle(int connect_fd){
     /**
      * TODO handle the http
      **/
-    char *buffer, *uri, *version, *method, *end_head, *host, *path;
+    char *buffer = NULL, *uri = NULL, *version = NULL, *method = NULL, *end_head = NULL, *host = NULL, *path = NULL;
     rio_t temp, serv;
     Rio_readinitb(&temp, connect_fd);
     Rio_readlineb(&temp, buffer, MAXLINE);
