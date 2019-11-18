@@ -20,9 +20,10 @@ typedef struct{
     char *protocol;
 } request;
 
+void read_requesthdrs(rio_t *rp);
 request *parse_uri(char *uri);
 void clienterror(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg);
-void build_http(char *uri, char *host, int port, char *path, rio_t *temp);
+void build_http(request *http_request, rio_t *temp);
 int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 
@@ -41,12 +42,14 @@ int main(int argc, char **argv)
 
     listenfd = Open_listenfd(argv[1]);
     while (1) {
+    printf("======================================================\n");
 	clientlen = sizeof(clientaddr);
 	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen); //line:netp:tiny:accept
     Getnameinfo((SA *) &clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, 0);
         printf("Accepted connection from (%s, %s)\n", hostname, port);
 	http_handle(connfd);                                             //line:netp:tiny:doit
-	Close(connfd);                                            //line:netp:tiny:close
+	Close(connfd);                                        //line:netp:tiny:close
+    printf("======================================================\n");
     }
 }
 /* $end tinymain */
@@ -71,6 +74,7 @@ void http_handle(int fd)
         return;
     printf("%s", buf);
     sscanf(buf, "%s %s %s", method, uri, version);       //line:netp:doit:parserequest
+    read_requesthdrs(&rio);
     if (strcasecmp(method, "GET")) {                     //line:netp:doit:beginrequesterr
         clienterror(fd, method, "501", "Not Implemented",
                     "Tiny does not implement this method");
@@ -78,12 +82,12 @@ void http_handle(int fd)
     }                                                    //line:netp:doit:endrequesterr                            //line:netp:doit:readrequesthdrs
 
     request *req = parse_uri(uri);
-    build_http(uri, hostname, port, path, &rio);
+    build_http(req, &rio);
 
 }
 
 /* $end read_requesthdrs */
-void build_http(char *uri, char *host, int port, char *path, rio_t *temp){
+void build_http(request *in_request, rio_t *temp){
     /**
      * TODO build the http header
      **/
@@ -92,16 +96,25 @@ void build_http(char *uri, char *host, int port, char *path, rio_t *temp){
 }
 
 request *parse_uri(char *uri){
-    request *ret;
     char *past_prot;
-    char *https = "https";
+    //char *https = "https";
+    const char *http = "http://";
+    const char *https = "https://";
+    
+    
+    request *ret;
     ret = malloc(sizeof(request));
     if (ret == NULL) printf("malloc failed\n");
 
     char *in_url = malloc(strlen(uri)+1);
     strcpy(in_url, uri);
 
-    if(strstr(uri, https)){
+    if(strstr(uri, http) == NULL && strstr(uri, https) == NULL){
+        printf("No protocol indicated\n");
+        past_prot = &in_url[0];
+    }
+
+    if(strstr(uri, https) == https){
         printf("HTTPS protocol not implemented\n");
         past_prot = &in_url[8];
     } else {
@@ -110,12 +123,14 @@ request *parse_uri(char *uri){
 
     printf("URI: %s\n", in_url);
     printf("ADDR: %s\n", past_prot);
+
     char* slash = strchr(past_prot, '/');
     char *path = malloc(strlen(in_url)+1);
+
     strcpy(path, slash);
     slash[0] = '\0';
     printf("HOST %s\n", past_prot);
-    printf("PATH: %s\n", path);
+    printf("PATH: %s\n\n", path);
     ret->protocol = "HTTP";
     ret->host = past_prot;
     ret->path = path;
@@ -178,3 +193,18 @@ void clienterror(int fd, char *cause, char *errnum,
     Rio_writen(fd, body, strlen(body));
 }
 /* $end clienterror */
+
+
+void read_requesthdrs(rio_t *rp) 
+{
+    char buf[MAXLINE];
+
+    Rio_readlineb(rp, buf, MAXLINE);
+    printf("%s", buf);
+    while(strcmp(buf, "\r\n")) {          //line:netp:readhdrs:checkterm
+	Rio_readlineb(rp, buf, MAXLINE);
+	printf("%s", buf);
+    }
+    return;
+}
+
