@@ -60,7 +60,6 @@ int main(int argc, char **argv)
 /* $begin doit */
 void http_handle(int fd) 
 {
-    int is_static;
     struct stat sbuf;
     char buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
     char http_header[MAXLINE];
@@ -97,15 +96,12 @@ void build_http(request *in_request, rio_t *temp){
 
 request *parse_uri(char *uri){
     char *past_prot;
-    //char *https = "https";
     const char *http = "http://";
     const char *https = "https://";
-    
-    
+    //const char *port_indicator = ":";
     request *ret;
     ret = malloc(sizeof(request));
     if (ret == NULL) printf("malloc failed\n");
-
     char *in_url = malloc(strlen(uri)+1);
     strcpy(in_url, uri);
 
@@ -123,10 +119,8 @@ request *parse_uri(char *uri){
 
     printf("URI: %s\n", in_url);
     printf("ADDR: %s\n", past_prot);
-
     char* slash = strchr(past_prot, '/');
     char *path = malloc(strlen(in_url)+1);
-
     strcpy(path, slash);
     slash[0] = '\0';
     printf("HOST %s\n", past_prot);
@@ -137,38 +131,6 @@ request *parse_uri(char *uri){
     ret->port = 8080;
     return ret;
 }
-
-int parse_request(char *uri, char *hostname, char *path, int port){
-    port = 8080;
-    char port_c[64];
-    char protocol[64];
-    char host_port[256];
-    printf("in parse\n");
-    printf("ahh %s\n", uri);
-    if(strstr(uri, "http://") == uri){
-        printf("in parse 1\n");
-        //sscanf(uri, "%[^:]", protocol);
-        //printf("proto %s\n", protocol);
-        sscanf(uri, "%[^:]//%[^/]%s", protocol, host_port, path);
-        //printf("22 %s, %s, %s", protocol, host_port, path);
-    } else {
-        printf("in parse 2\n");
-        sscanf(uri, "%[^/]%s", host_port, path);
-        //printf("11 %s, %s", host_port, path);
-    }
-    //printf("%s\n", host_port);
-    if(!strstr(host_port, ":")){
-        //printf("in parse 3\n");
-        sscanf(host_port, "%[^:]%s", hostname, port_c);
-    }
-    //printf("in parse 4\n");
-    port = atoi(port_c);
-    printf("protocol: %s\nhost: %s\npath: %s\nport: %d\n", protocol, host_port, path, port);
-    return 1;
-}
-
-
-
 
 /* $begin clienterror */
 void clienterror(int fd, char *cause, char *errnum, 
@@ -194,7 +156,10 @@ void clienterror(int fd, char *cause, char *errnum,
 }
 /* $end clienterror */
 
-
+/*
+ * read_requesthdrs - read HTTP request headers
+ */
+/* $begin read_requesthdrs */
 void read_requesthdrs(rio_t *rp) 
 {
     char buf[MAXLINE];
@@ -207,4 +172,5 @@ void read_requesthdrs(rio_t *rp)
     }
     return;
 }
+/* $end read_requesthdrs */
 
