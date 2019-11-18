@@ -8,6 +8,8 @@ void kill_5_philosophers();
 
 void philosopher_algorithm(int num);
 
+void philosopher_algorithm_et(int num);
+
 void philosopher_algorithm_cr(int num);
 
 #endif //philosopher_h

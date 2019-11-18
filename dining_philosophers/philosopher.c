@@ -26,9 +26,20 @@ int pickup_chopstick(int which_stick){
     return semaphore_lock(which_stick);
 }
 
-int setdown_chopstick(int which_stick){
+int pickup_chop(int which_stick){
+    // try to pick up chopstick 'which_stick' [0-4]
     pid_t pid = getpid();
     printf("Child[%i] pickup_chopstick(%i)\n",pid,which_stick);
+    fflush(stdout);
+    usleep(10000); // 0.1 seconds?
+    int ret = sem_lock(which_stick);
+    printf("%u %d\n", pid,ret);
+    return ret;
+}
+
+int setdown_chopstick(int which_stick){
+    pid_t pid = getpid();
+    printf("Child[%i] setdown_chopstick(%i)\n",pid,which_stick);
     fflush(stdout);
     usleep(10000);
     return semaphore_unlock(which_stick);
@@ -81,13 +92,14 @@ void create_5_philosophers(int argc){
     }
     // create 5 philosophers processes 
     for(i=0;i<5;i++){
+        usleep(10000);
         pid_t temp = fork();
         if (temp == 0){
             if (argc > 1){ //check for # of args
-                printf("Using corrected algorithm\n");
-                printf("%i\n", i);
+                //printf("Using corrected algorithm\n");
+                //printf("%i\n", i);
                 fflush(stdout);
-                philosopher_algorithm_cr(i);
+                philosopher_algorithm_et(i);
             } else {
                 printf("Using deadlock algorithm\n");
                 fflush(stdout);
@@ -141,6 +153,30 @@ void philosopher_algorithm(int num){
 
 }
 
+void philosopher_algorithm_et(int num){
+    int chopstick1 = chopsticks[num];
+    int chopstick2 = chopsticks[(num+1)%5];
+
+    pid_t pid = getpid();
+    printf("Child[%i] starting philosopher_algorithm(%i)\n",pid,num);
+    fflush(stdout);
+
+    while(1){ // basic algorithm
+        if (pickup_chop(chopstick2) != -1 && pickup_chop(chopstick1) != -1){
+            printf("Got left chopstick\n");
+            printf("Got right chopstick\n");
+            eat_from_plate();
+            setdown_chopstick( chopstick1 );
+            setdown_chopstick( chopstick2 );
+            think();
+        } else {
+            setdown_chopstick( chopstick2 );
+            setdown_chopstick( chopstick1 );
+        }
+    }
+
+}
+
 void philosopher_algorithm_cr(int num){
     //int chopstick1 = chopsticks[i];
     //int chopstick2 = chopsticks[(i+1)%5];
@@ -161,10 +197,10 @@ void philosopher_algorithm_cr(int num){
     
     while(1){
 
-        pickup_chopstick( chopstick1 );
+        pickup_chop( chopstick1 );
         printf("Philosopher[%i] picked up left chopstick\n", num);
         fflush(stdout);
-        pickup_chopstick( chopstick2 );
+        pickup_chop( chopstick2 );
         printf("Philosopher[%i] picked up right chopstick\n", num);
         fflush(stdout);
         eat_from_plate();
