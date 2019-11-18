@@ -58,11 +58,11 @@ void http_handle(int fd)
 {
     //struct stat sbuf;
     char buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
-    char http_header[MAXLINE];
-    char hostname[MAXLINE], path[MAXLINE];
+    //char http_header[MAXLINE];
+    //char hostname[MAXLINE], path[MAXLINE];
     rio_t rio, serv;
-    int end_server;
-    int port;
+    //int end_server;
+    //int port;
     /* Read request line and headers */
     Rio_readinitb(&rio, fd);
     if (!Rio_readlineb(&rio, buf, MAXLINE))  //line:netp:doit:readrequest
@@ -72,7 +72,7 @@ void http_handle(int fd)
     read_requesthdrs(&rio);
     if (strcasecmp(method, "GET")) {                     //line:netp:doit:beginrequesterr
         clienterror(fd, method, "501", "Not Implemented",
-                    "Tiny does not implement this method");
+                    "Proxy does not implement other than GET");
         return;
     }                                                    //line:netp:doit:endrequesterr                            //line:netp:doit:readrequesthdrs
 
@@ -92,7 +92,7 @@ void build_http(request *in_request, rio_t *temp){
 
 request *parse_uri(char *uri){
     char *past_prot;
-    const char *http = "http://";
+    //const char *http = "http://";
     const char *https = "https://";
     //const char *port_indicator = ":";
     request *ret;
@@ -100,11 +100,6 @@ request *parse_uri(char *uri){
     if (ret == NULL) printf("malloc failed\n");
     char *in_url = malloc(strlen(uri)+1);
     strcpy(in_url, uri);
-
-    if(strstr(uri, http) == NULL && strstr(uri, https) == NULL){
-        printf("No protocol indicated\n");
-        past_prot = &in_url[0];
-    }
 
     if(strstr(uri, https) == https){
         printf("HTTPS protocol not implemented\n");
