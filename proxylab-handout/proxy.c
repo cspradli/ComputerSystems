@@ -27,8 +27,9 @@ void build_http(request *http_request, rio_t *temp);
 int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 
-int main(int argc, char **argv) 
-{
+/* $begin http_handle */
+int main(int argc, char **argv) {
+    
     int listenfd, connfd;
     char hostname[MAXLINE], port[MAXLINE];
     socklen_t clientlen;
@@ -36,28 +37,30 @@ int main(int argc, char **argv)
 
     /* Check command line args */
     if (argc != 2) {
-	fprintf(stderr, "usage: %s <port>\n", argv[0]);
-	exit(1);
+	    fprintf(stderr, "usage: %s <port>\n", argv[0]);
+	    exit(1);
     }
 
     listenfd = Open_listenfd(argv[1]);
     while (1) {
     printf("======================================================\n");
-	clientlen = sizeof(clientaddr);
-	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen); //line:netp:tiny:accept
+	
+    clientlen = sizeof(clientaddr);
+	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
     Getnameinfo((SA *) &clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, 0);
         printf("Accepted connection from (%s, %s)\n", hostname, port);
-	http_handle(connfd);                                             //line:netp:tiny:doit
-	Close(connfd);                                        //line:netp:tiny:close
+	http_handle(connfd);
+	Close(connfd);
+
     printf("======================================================\n");
     }
 }
 /* $end tinymain */
 
 /*
- * doit - handle one HTTP request/response transaction
+ * handle_http - handle one HTTP request/response transaction
  */
-/* $begin doit */
+/* $begin http_handle */
 void http_handle(int fd) 
 {
     struct stat sbuf;
