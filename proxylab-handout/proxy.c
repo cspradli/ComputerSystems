@@ -1,17 +1,9 @@
-/* $begin tinymain */
 /*
- * tiny.c - A simple, iterative HTTP/1.0 Web server that uses the 
- *     GET method to serve static and dynamic content.
+ * proxy.c a simple proxy for CSAPP
+ * Author: Caleb Spradlin
+ * Date: 11.18.2019
  */
 #include "csapp.h"
-
-typedef struct
-{
-    int port;
-    char *host;
-    char*path;
-    char *protocol;
-} http;
 
 typedef struct{
     int port;
@@ -20,6 +12,7 @@ typedef struct{
     char *protocol;
 } request;
 
+/* Function prototypes */
 void read_requesthdrs(rio_t *rp);
 request *parse_uri(char *uri);
 void clienterror(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg);
@@ -27,7 +20,7 @@ void build_http(request *http_request, rio_t *temp);
 int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 
-/* $begin http_handle */
+
 int main(int argc, char **argv) {
     
     int listenfd, connfd;
@@ -55,7 +48,7 @@ int main(int argc, char **argv) {
     printf("======================================================\n");
     }
 }
-/* $end tinymain */
+
 
 /*
  * handle_http - handle one HTTP request/response transaction
@@ -63,7 +56,7 @@ int main(int argc, char **argv) {
 /* $begin http_handle */
 void http_handle(int fd) 
 {
-    struct stat sbuf;
+    //struct stat sbuf;
     char buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
     char http_header[MAXLINE];
     char hostname[MAXLINE], path[MAXLINE];
