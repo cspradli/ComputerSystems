@@ -135,7 +135,7 @@ request *parse_uri(char *uri){
     if (ret == NULL) printf("malloc failed\n");
     char *in_url = malloc(strlen(uri)+1);
     strcpy(in_url, uri);
-    printf("HTTPS CHECK: %c", in_url[4]);
+    printf("HTTPS CHECK: %c\n", in_url[4]);
     if(in_url[4] == 's'){
         printf("HTTPS protocol not implemented\n");
         past_prot = &in_url[8];
@@ -168,7 +168,7 @@ int endserv_connect(request *req, char *http_header){
 
 void *thread(void *vargp){
     int connfd = (int) vargp;
-    printf("New thread created! fd = %d >>>>>>>>>>>>>>>>>>\n", connfd);
+    printf("<<<<<<<<<<<<<<<<<<< Thread created connection = %d >>>>>>>>>>>>>>>>>>\n", connfd);
     Pthread_detach(pthread_self());
     http_handle(connfd);
     Close(connfd);
