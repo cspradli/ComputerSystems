@@ -16,9 +16,10 @@ typedef struct{
 void read_requesthdrs(rio_t *rp);
 request *parse_uri(char *uri);
 void clienterror(int fd, char *cause, char *errnum, char *shortmsg, char *longmsg);
-void build_http(request *http_request, rio_t *temp);
+void build_http(char *header, request *http_request, rio_t *temp);
 int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
+int endserv_connect(request *req, char *http_head);
 
 
 int main(int argc, char **argv) {
@@ -58,10 +59,10 @@ void http_handle(int fd)
 {
     //struct stat sbuf;
     char buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
-    //char http_header[MAXLINE];
+    char http_header[MAXLINE];
     //char hostname[MAXLINE], path[MAXLINE];
     rio_t rio, serv;
-    //int end_server;
+    int end_server;
     //int port;
     /* Read request line and headers */
     Rio_readinitb(&rio, fd);
@@ -77,16 +78,26 @@ void http_handle(int fd)
     }                                                    //line:netp:doit:endrequesterr                            //line:netp:doit:readrequesthdrs
 
     request *req = parse_uri(uri);
-    build_http(req, &rio);
+    build_http(http_header, req, &rio);
+    /*end_server = endserv_connect(req, http_header);
+    if (end_server < 0){
+        printf("Connection failed \n");
+        return;
+    }
 
+    Close(end_server);*/
 }
 
 /* $end read_requesthdrs */
-void build_http(request *in_request, rio_t *temp){
+void build_http(char *http_header, request *in_request, rio_t *temp){
     /**
      * TODO build the http header
      **/
+    /*char buf[MAXLINE];
+    while(Rio_readlineb(temp, buf, MAXLINE) > 0){
+        if(!strcmp(buf, "\r\n")) break;
 
+    }*/
     
 }
 
@@ -121,6 +132,12 @@ request *parse_uri(char *uri){
     ret->path = path;
     ret->port = 8080;
     return ret;
+}
+
+int endserv_connect(request *req, char *http_header){
+    char *portString;
+    sprintf(portString, "%d", req->port);
+    return Open_clientfd(req->host, portString);
 }
 
 /* $begin clienterror */
