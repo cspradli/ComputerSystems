@@ -21,6 +21,9 @@ int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 int endserv_connect(request *req, char *http_head);
 
+static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
+static const char *conn_hdr = "Connection: close\r\n";
+static const char *prox_hdr = "Proxy-Connection: close\r\n";
 
 int main(int argc, char **argv) {
     
@@ -107,6 +110,9 @@ void build_http(char *http_header, request *in_request, rio_t *temp){
     strcat(http_header, "Host: ");
     strcat(http_header, in_request->host);
     strcat(http_header, "\r\n");
+    strcat(http_header, conn_hdr);
+    strcat(http_header, prox_hdr);
+    strcat(http_header, user_agent_hdr);
     strcat(http_header, "\r\n");
     printf("%s\n", http_header);
     
