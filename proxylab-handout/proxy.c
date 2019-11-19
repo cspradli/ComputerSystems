@@ -3,8 +3,12 @@
  * Author: Caleb Spradlin
  * Date: 11.18.2019
  */
+#include <stdio.h>
+#include <pthread.h>
 #include "csapp.h"
 
+#define MAX_CACHE_SIZE 1049000
+#define MAX_OBJECT_SIZE 102400
 typedef struct{
     int port;
     char *host;
@@ -20,6 +24,9 @@ void build_http(char *header, request *http_request, rio_t *temp);
 int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 int endserv_connect(request *req, char *http_head);
+void *thread(void *vargp);
+
+
 
 static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
 static const char *conn_hdr = "Connection: close\r\n";
@@ -31,7 +38,7 @@ int main(int argc, char **argv) {
     char hostname[MAXLINE], port[MAXLINE];
     socklen_t clientlen;
     struct sockaddr_storage clientaddr;
-
+    pthread_t tid;
     /* Check command line args */
     if (argc != 2) {
 	    fprintf(stderr, "usage: %s <port>\n", argv[0]);
@@ -45,11 +52,11 @@ int main(int argc, char **argv) {
     clientlen = sizeof(clientaddr);
 	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
     Getnameinfo((SA *) &clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, 0);
-        printf("Accepted connection from (%s, %s)\n", hostname, port);
-	http_handle(connfd);
+    printf("Accepted connection from (%s, %s)\n", hostname, port);
+    Pthread_create(&tid, NULL, thread, (void *) connfd);
+	/*http_handle(connfd);
 	Close(connfd);
-
-    printf("======================================================\n");
+    */
     }
 }
 
@@ -158,6 +165,16 @@ int endserv_connect(request *req, char *http_header){
     return Open_clientfd(req->host, portString);
 }
 
+
+void *thread(void *vargp){
+    int connfd = (int) vargp;
+    printf("New thread created! fd = %d >>>>>>>>>>>>>>>>>>\n", connfd);
+    Pthread_detach(pthread_self());
+    http_handle(connfd);
+    Close(connfd);
+    printf("======================================================\n");
+    //return NULL;
+}
 /* $begin clienterror */
 void clienterror(int fd, char *cause, char *errnum, 
 		 char *shortmsg, char *longmsg) 
