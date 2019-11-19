@@ -79,40 +79,51 @@ void http_handle(int fd)
 
     request *req = parse_uri(uri);
     build_http(http_header, req, &rio);
-    /*end_server = endserv_connect(req, http_header);
+    printf("From handle %s", http_header);
+    end_server = endserv_connect(req, http_header);
     if (end_server < 0){
         printf("Connection failed \n");
         return;
     }
-
-    Close(end_server);*/
+    printf("Connection succesful\n");
+    Rio_readinitb(&serv, end_server);
+    Rio_writen(end_server, http_header, strlen(http_header));
+    size_t n;
+    while ((n = Rio_readlineb(&serv, buf, MAXLINE))!=0)
+    {
+        printf("PROXY: recieved %ld bytes.\n", n);
+        Rio_writen(fd, buf, n);
+    }
+    
+    Close(end_server);
 }
 
-/* $end read_requesthdrs */
-void build_http(char *http_header, request *in_request, rio_t *temp){
-    /**
-     * TODO build the http header
-     **/
-    /*char buf[MAXLINE];
-    while(Rio_readlineb(temp, buf, MAXLINE) > 0){
-        if(!strcmp(buf, "\r\n")) break;
 
-    }*/
+void build_http(char *http_header, request *in_request, rio_t *temp){
+
+    strcat(http_header, "GET ");
+    strcat(http_header, in_request->path);
+    strcat(http_header, " HTTP/1.0\r\n");
+    strcat(http_header, "Host: ");
+    strcat(http_header, in_request->host);
+    strcat(http_header, "\r\n");
+    strcat(http_header, "\r\n");
+    printf("%s\n", http_header);
     
 }
 
 request *parse_uri(char *uri){
     char *past_prot;
     //const char *http = "http://";
-    const char *https = "https://";
+    //const char *https = "https://";
     //const char *port_indicator = ":";
     request *ret;
     ret = malloc(sizeof(request));
     if (ret == NULL) printf("malloc failed\n");
     char *in_url = malloc(strlen(uri)+1);
     strcpy(in_url, uri);
-
-    if(strstr(uri, https) == https){
+    printf("HTTPS CHECK: %c", in_url[4]);
+    if(in_url[4] == 's'){
         printf("HTTPS protocol not implemented\n");
         past_prot = &in_url[8];
     } else {
@@ -130,13 +141,14 @@ request *parse_uri(char *uri){
     ret->protocol = "HTTP";
     ret->host = past_prot;
     ret->path = path;
-    ret->port = 8080;
+    ret->port = 80;
     return ret;
 }
 
 int endserv_connect(request *req, char *http_header){
-    char *portString;
+    char portString[24];
     sprintf(portString, "%d", req->port);
+    printf("Attempting connection to host %s through port %s\n", req->host, portString);
     return Open_clientfd(req->host, portString);
 }
 
@@ -167,18 +179,17 @@ void clienterror(int fd, char *cause, char *errnum,
 /*
  * read_requesthdrs - read HTTP request headers
  */
-/* $begin read_requesthdrs */
 void read_requesthdrs(rio_t *rp) 
 {
     char buf[MAXLINE];
 
     Rio_readlineb(rp, buf, MAXLINE);
     printf("%s", buf);
-    while(strcmp(buf, "\r\n")) {          //line:netp:readhdrs:checkterm
-	Rio_readlineb(rp, buf, MAXLINE);
-	printf("%s", buf);
+    while(strcmp(buf, "\r\n")) {
+	    Rio_readlineb(rp, buf, MAXLINE);
+	    printf("%s", buf);
     }
     return;
 }
-/* $end read_requesthdrs */
+
 
