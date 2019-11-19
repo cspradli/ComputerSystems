@@ -139,8 +139,11 @@ request *parse_uri(char *uri){
     if(in_url[4] == 's'){
         printf("HTTPS protocol not implemented\n");
         past_prot = &in_url[8];
+        ret->port = 443;
     } else {
+        printf("ELSE \n");
         past_prot = &in_url[7];
+        ret->port = 80;
     }
 
     printf("URI: %s\n", in_url);
@@ -154,7 +157,6 @@ request *parse_uri(char *uri){
     ret->protocol = "HTTP";
     ret->host = past_prot;
     ret->path = path;
-    ret->port = 80;
     return ret;
 }
 
