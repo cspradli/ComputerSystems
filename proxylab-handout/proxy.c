@@ -6,14 +6,15 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "csapp.h"
+#include "linked_list.h"
 
 #define MAX_CACHE_SIZE 1049000
 #define MAX_OBJECT_SIZE 102400
 typedef struct{
     int port;
-    char *host;
-    char *path;
-    char *protocol;
+    char host[256];
+    char path[1024];
+    char protocol[24];
 } request;
 
 /* Function prototypes */
@@ -25,7 +26,7 @@ int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 int endserv_connect(request *req, char *http_head);
 void *thread(void *vargp);
-request *parse_again(char *uri);
+//request *parse_again(char *uri);
 
 static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
 static const char *conn_hdr = "Connection: close\r\n";
@@ -86,8 +87,8 @@ void http_handle(int fd)
                     "Proxy does not implement other than GET");
         return;
     }                                                    //line:netp:doit:endrequesterr                            //line:netp:doit:readrequesthdrs
-    //request *req = parse_again(uri);
     request *req = parse_uri(uri);
+    //request *req = parse_uri(uri);
     build_http(http_header, req, &rio);
     printf("From handle %s", http_header);
     end_server = endserv_connect(req, http_header);
@@ -127,7 +128,7 @@ void build_http(char *http_header, request *in_request, rio_t *temp){
     printf("%s\n", http_header);
     
 }
-
+/*
 request *parse_uri(char *uri){
     char *past_prot;
     //const char *http = "http://";
@@ -157,21 +158,24 @@ request *parse_uri(char *uri){
     slash[0] = '\0';
     printf("HOST %s\n", past_prot);
     printf("PATH: %s\n\n", path);
-    ret->protocol = "HTTP";
-    ret->host = past_prot;
-    ret->path = path;
+    //ret->protocol = "HTTP";
+    strcpy(ret->protocol, "HTTP");
+    strcpy(ret->host, path);
+    strcpy(ret->host, past_prot);
+    //ret->host = past_prot;
+    //ret->path = path;
     return ret;
 }
-
-request *parse_again(char *url){
+*/
+request *parse_uri(char *url){
     request *ret;
     ret = malloc(sizeof(request));
     if (ret == NULL) printf("malloc failed\n");
 
-    char *host;
+    char host[256] = "";
     int port = 80;
-    char *uri2 = "";
-    char *uri = "/";
+    char uri2[512] = "";
+    char uri[512] = "/";
     int succ_parsing = 0;
 
     if (sscanf(url, "http://%99[^:]:%i/%199[^\n]", host, &port, uri2) == 3){ succ_parsing = 1; }
@@ -180,13 +184,17 @@ request *parse_again(char *url){
     else if (sscanf(url, "http://%99[^\n]", host) == 1) { succ_parsing = 1; }
     strcat(uri, uri2);
     
-    ret->protocol = "HTTP";
-    ret->host = host;
+    //ret->host = host;
+    strcpy(ret->host, host);
+    //ret->path = uri;
+    strcpy(ret->path, uri);
     ret->port = port;
-    ret->path = uri;
+    //ret->protocol = "HTTP";
+    strcpy(ret->protocol, "HTTP");
     printf("PARSE AGAIN\nHOST %s\n", ret->host);
     printf("PORT: %d\n", ret->port);
-    printf("URI %s\n\n", ret->path);
+    printf("URI %s\n", ret->path);
+    printf("SUCCESS: %d\n\n", succ_parsing);
     return ret;
 
 }
