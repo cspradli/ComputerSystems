@@ -14,6 +14,7 @@
  */
 
 typedef struct ELE {
+	time_t dat;
 	char *data;
 	struct ELE *next;
 } node;
@@ -50,6 +51,7 @@ bool linked_list_destroy(linked_list *ll);
  */
 bool linked_list_add(linked_list *ll, char *input);
 
+long int compare_to(long int i, long int k);
 /*
  * Add to linked list, based on alphabetical sort
  * Returns true if succesfull

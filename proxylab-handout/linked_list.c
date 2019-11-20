@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "linked_list.h"
-
+#include <time.h>
 linked_list *create_linked_list(){
     printf("Link list created\n");
     linked_list *ll = malloc(sizeof(linked_list));
@@ -50,6 +50,7 @@ bool linked_list_add(linked_list *ll, char *key){
 
     if (newn == NULL){ return false; }
     newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
+    newn->dat = time(NULL);
     strcpy(newn->data, key);
     newn->next = ll->head;
     ll->head = newn;
@@ -57,6 +58,9 @@ bool linked_list_add(linked_list *ll, char *key){
     return true;
 }
 
+long int compare_to(long int i, long int k){
+    return i-k;
+}
 
 bool linked_list_insertion(linked_list *ll, char *key){
     node *newn;
@@ -70,12 +74,12 @@ bool linked_list_insertion(linked_list *ll, char *key){
     //malloc needed memory for string
     newn->data = (char*) malloc(sizeof(char)* (strlen(key)+1));
     strcpy(newn->data, key);
-
+    newn->dat = time(NULL);
     if (ll->head == NULL){
         ll->head = newn;
         ll->count++;
         return true;
-    } else if(strcmp(newn->data, ll->head->data) < 0) {
+    } else if(compare_to(newn->dat, ll->head->dat) < 0) {
         newn->next = ll->head;
         ll->head = newn;
         return true;
@@ -84,7 +88,7 @@ bool linked_list_insertion(linked_list *ll, char *key){
         node *before = ll->head;
 
         while (after != NULL){
-            if (strcmp(newn->data, after->data) < 0) break;
+            if (compare_to(newn->dat, after->dat) < 0) break;
             before = after;
             after = after->next;
         }
@@ -172,7 +176,7 @@ void linked_list_print(linked_list *ll){
     node *current = ll->head;
 
     while (current != NULL){ 
-     printf("%s \n", current->data); 
+     printf("NODE\n========\nTime: %li\nData: %s\n========\n", current->dat, current->data); 
      current = current->next; 
     }
 } 

@@ -38,13 +38,16 @@ int main(int argc, char **argv) {
     char hostname[MAXLINE], port[MAXLINE];
     socklen_t clientlen;
     struct sockaddr_storage clientaddr;
+    linked_list *ll;
+    ll = create_linked_list();
     pthread_t tid;
     /* Check command line args */
     if (argc != 2) {
 	    fprintf(stderr, "usage: %s <port>\n", argv[0]);
 	    exit(1);
     }
-
+    linked_list_add(ll, "Yees");
+    linked_list_print(ll);
     listenfd = Open_listenfd(argv[1]);
     while (1) {
     printf("======================================================\n");
