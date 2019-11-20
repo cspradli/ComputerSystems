@@ -25,8 +25,7 @@ int parse_request(char *uri, char *hostname, char *path, int port);
 void http_handle(int fd);
 int endserv_connect(request *req, char *http_head);
 void *thread(void *vargp);
-
-
+request *parse_again(char *uri);
 
 static const char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
 static const char *conn_hdr = "Connection: close\r\n";
@@ -54,7 +53,8 @@ int main(int argc, char **argv) {
     Getnameinfo((SA *) &clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, 0);
     printf("Accepted connection from (%s, %s)\n", hostname, port);
     Pthread_create(&tid, NULL, thread, (void *) connfd);
-	/*http_handle(connfd);
+	printf("TID %ld", tid);
+    /*http_handle(connfd);
 	Close(connfd);
     */
     }
@@ -86,19 +86,22 @@ void http_handle(int fd)
                     "Proxy does not implement other than GET");
         return;
     }                                                    //line:netp:doit:endrequesterr                            //line:netp:doit:readrequesthdrs
-
+    //request *req = parse_again(uri);
     request *req = parse_uri(uri);
     build_http(http_header, req, &rio);
     printf("From handle %s", http_header);
     end_server = endserv_connect(req, http_header);
+    
     if (end_server < 0){
         printf("Connection failed \n");
         return;
     }
+    
     printf("Connection succesful\n");
     Rio_readinitb(&serv, end_server);
     Rio_writen(end_server, http_header, strlen(http_header));
     size_t n;
+    
     while ((n = Rio_readlineb(&serv, buf, MAXLINE))!=0)
     {
         printf("PROXY: recieved %ld bytes.\n", n);
@@ -160,10 +163,38 @@ request *parse_uri(char *uri){
     return ret;
 }
 
+request *parse_again(char *url){
+    request *ret;
+    ret = malloc(sizeof(request));
+    if (ret == NULL) printf("malloc failed\n");
+
+    char *host;
+    int port = 80;
+    char *uri2 = "";
+    char *uri = "/";
+    int succ_parsing = 0;
+
+    if (sscanf(url, "http://%99[^:]:%i/%199[^\n]", host, &port, uri2) == 3){ succ_parsing = 1; }
+    else if (sscanf(url, "http://%99[^/]/%199[^\n]", host, uri2) == 2){ succ_parsing = 1; }
+    else if (sscanf(url, "http://%99[^:]:%i[^\n]", host, &port) == 2) { succ_parsing = 1; }
+    else if (sscanf(url, "http://%99[^\n]", host) == 1) { succ_parsing = 1; }
+    strcat(uri, uri2);
+    
+    ret->protocol = "HTTP";
+    ret->host = host;
+    ret->port = port;
+    ret->path = uri;
+    printf("PARSE AGAIN\nHOST %s\n", ret->host);
+    printf("PORT: %d\n", ret->port);
+    printf("URI %s\n\n", ret->path);
+    return ret;
+
+}
+
 int endserv_connect(request *req, char *http_header){
     char portString[24];
     sprintf(portString, "%d", req->port);
-    printf("Attempting connection to host %s through port %s\n", req->host, portString);
+    printf("Attempting connection to host '%s' through port '%s'\n", req->host, portString);
     return Open_clientfd(req->host, portString);
 }
 
