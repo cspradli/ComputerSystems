@@ -1,8 +1,14 @@
 /*
  * proxy.c a simple proxy for CSAPP
  * Author: Caleb Spradlin
- * Date: 11.18.2019
+ * Date: 11.20.2019
  */
+
+/**
+ * NOTE! ATTENTION! This is what I currently have. It is having trouble with
+ * loading images but has all concurrency and basic proxy needs. 
+ * I am working on the chached version now and will have it ready ASAP
+ **/
 #include <stdio.h>
 #include <pthread.h>
 #include "csapp.h"
@@ -105,13 +111,12 @@ void http_handle(int fd)
     Rio_readinitb(&serv, end_server);
     Rio_writen(end_server, http_header, strlen(http_header));
     size_t n;
-    
     while ((n = Rio_readlineb(&serv, buf, MAXLINE))!=0)
     {
-        printf("PROXY: recieved %ld bytes.\n", n);
+        //printf("PROXY: recieved %ld bytes.\n", n);
+        printf("%s", buf);
         Rio_writen(fd, buf, n);
     }
-    
     Close(end_server);
 }
 
@@ -131,45 +136,7 @@ void build_http(char *http_header, request *in_request, rio_t *temp){
     printf("%s\n", http_header);
     
 }
-/*
-request *parse_uri(char *uri){
-    char *past_prot;
-    //const char *http = "http://";
-    //const char *https = "https://";
-    //const char *port_indicator = ":";
-    request *ret;
-    ret = malloc(sizeof(request));
-    if (ret == NULL) printf("malloc failed\n");
-    char *in_url = malloc(strlen(uri)+1);
-    strcpy(in_url, uri);
-    printf("HTTPS CHECK: %c\n", in_url[4]);
-    if(in_url[4] == 's'){
-        printf("HTTPS protocol not implemented\n");
-        past_prot = &in_url[8];
-        ret->port = 443;
-    } else {
-        printf("ELSE \n");
-        past_prot = &in_url[7];
-        ret->port = 80;
-    }
 
-    printf("URI: %s\n", in_url);
-    printf("ADDR: %s\n", past_prot);
-    char* slash = strchr(past_prot, '/');
-    char *path = malloc(strlen(in_url)+1);
-    strcpy(path, slash);
-    slash[0] = '\0';
-    printf("HOST %s\n", past_prot);
-    printf("PATH: %s\n\n", path);
-    //ret->protocol = "HTTP";
-    strcpy(ret->protocol, "HTTP");
-    strcpy(ret->host, path);
-    strcpy(ret->host, past_prot);
-    //ret->host = past_prot;
-    //ret->path = path;
-    return ret;
-}
-*/
 request *parse_uri(char *url){
     request *ret;
     ret = malloc(sizeof(request));
@@ -194,7 +161,7 @@ request *parse_uri(char *url){
     ret->port = port;
     //ret->protocol = "HTTP";
     strcpy(ret->protocol, "HTTP");
-    printf("PARSE AGAIN\nHOST %s\n", ret->host);
+    printf("PARSE\nHOST %s\n", ret->host);
     printf("PORT: %d\n", ret->port);
     printf("URI %s\n", ret->path);
     printf("SUCCESS: %d\n\n", succ_parsing);
@@ -203,7 +170,7 @@ request *parse_uri(char *url){
 }
 
 int endserv_connect(request *req, char *http_header){
-    char portString[24];
+    char portString[10];
     sprintf(portString, "%d", req->port);
     printf("Attempting connection to host '%s' through port '%s'\n", req->host, portString);
     return Open_clientfd(req->host, portString);
