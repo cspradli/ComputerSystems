@@ -96,10 +96,9 @@ void create_5_philosophers(int argc){
         pid_t temp = fork();
         if (temp == 0){
             if (argc > 1){ //check for # of args
-                //printf("Using corrected algorithm\n");
-                //printf("%i\n", i);
+                printf("Using corrected algorithm\n");
                 fflush(stdout);
-                philosopher_algorithm_et(i);
+                philosopher_algorithm_correct(i);
             } else {
                 printf("Using deadlock algorithm\n");
                 fflush(stdout);
@@ -115,15 +114,6 @@ void create_5_philosophers(int argc){
     }
 }
 
-
-void test(int num){
-    //if neighbors aren't eating then eat 
-    // next philosopher eats 
-    //
-
-
-
-}
 void kill_5_philosophers(){
     int i;
     for(i=0;i<5;i++){
@@ -153,16 +143,17 @@ void philosopher_algorithm(int num){
 
 }
 
-void philosopher_algorithm_et(int num){
+void philosopher_algorithm_correct(int num){
     int chopstick1 = chopsticks[num];
     int chopstick2 = chopsticks[(num+1)%5];
 
-    pid_t pid = getpid();
-    printf("Child[%i] starting philosopher_algorithm(%i)\n",pid,num);
+    //pid_t pid = getpid();
+    //printf("Child[%i] starting philosopher_algorithm(%i)\n",pid,num);
     fflush(stdout);
 
     while(1){ // basic algorithm
-        if (pickup_chop(chopstick2) != -1 && pickup_chop(chopstick1) != -1){
+        //usleep(50000);
+        if ((pickup_chop(chopstick1) != -1)  && (pickup_chop(chopstick2) != -1)){
             printf("Got left chopstick\n");
             printf("Got right chopstick\n");
             eat_from_plate();

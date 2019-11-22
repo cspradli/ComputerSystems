@@ -40,7 +40,7 @@ int sem_lock(int lock_num){
     struct sembuf op;
     op.sem_num = 0;
     op.sem_op = -1;
-    op.sem_flg = IPC_NOWAIT;
+    op.sem_flg = (IPC_NOWAIT & lock_num);
     return semop(lock_num, &op, 1);
 
 }
