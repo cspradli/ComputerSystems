@@ -15,7 +15,7 @@
 #include "linked_list.h"
 
 #define MAX_CACHE_SIZE 1049000
-#define MAX_OBJECT_SIZE 102400
+#define MAX_OBJECT_SIZE 409600
 typedef struct{
     int port;
     char host[256];
@@ -122,7 +122,7 @@ void http_handle(int fd)
 
 
 void build_http(char *http_header, request *in_request, rio_t *temp){
-
+    //memset(http_header, 0, sizeof(http_header));
     strcat(http_header, "GET ");
     strcat(http_header, in_request->path);
     strcat(http_header, " HTTP/1.0\r\n");
