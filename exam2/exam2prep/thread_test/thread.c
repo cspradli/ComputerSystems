@@ -8,6 +8,18 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 
 
+    void *thread(void *targ_in){
+        struct arg* targ = (struct arg*) targ_in;
+        printf("here3\n");
+        pthread_mutex_lock(&mutex1);
+        printf("here4\n");
+        
+        char *output = parse_and_fetch_url(targ->name);
+        linked_list_add(my_list, output);
+        pthread_mutex_unlock(&mutex1);
+        pthread_exit(NULL);
+    }
+
 //long int random(void);
 // function to run one thread
 
