@@ -1,25 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "linked_list.h"
 #include "mycurl.h"
 
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
-struct arg {
-    linked_list *ll;
-    char*name;
-};
-typedef struct thread_data
-{
-    linked_list *ll;
-    char*name;
-
-} thread_data;
-
-void *thread(void *targ_in);
 
 int main(int argc, char**argv){
-    pthread_t tid;
+    pthread_t tid[10];
     char* urls[10] = {
         "http://www.cs.unca.edu/~drawert/cs335/exam2/check1.php",
         "http://www.cs.unca.edu/~drawert/cs335/exam2/check2.php",
@@ -35,16 +22,23 @@ int main(int argc, char**argv){
     int i;
 
     linked_list* my_list = create_linked_list();
-    thread_data *tdata;
-    tdata = malloc(sizeof(tdata));
+    //hread_data *tdata;
+    // tdata = malloc(sizeof(tdata));
+    struct arg targ[10];
     for(i=0; i< 10; i++){
-        tdata->ll = my_list;
-        tdata->name=urls[i];
-        printf("%s\n",urls[i]);
-        pthread_create(&tid, NULL, thread, (void *)&tdata);
+        printf("%s\n", urls[i]);
+        //tdata->ll = my_list;
+        //tdata->name=urls[i];
+        //printf("%s\n",urls[i]);
+        //pthread_create(&tid[i], NULL, thread, (void *)&tdata);
+        targ[i].i = i;
+        targ[i].url = urls[i];
+        targ[i].my_list = my_list;
     }
 
+    for (i=0; i < 10; i++){
 
+    }
 
     // print out list
     node* n;
@@ -58,14 +52,6 @@ int main(int argc, char**argv){
 }
 
 
-void *thread(void *targ_in){
-        struct arg* targ = (struct arg*) targ_in;
-        pthread_mutex_lock(&mutex1);
-        
-        char *output = parse_and_fetch_url(targ->name);
-        linked_list_add(targ->ll, output);
-        pthread_mutex_unlock(&mutex1);
-        pthread_exit(NULL);
-}
+
 
 

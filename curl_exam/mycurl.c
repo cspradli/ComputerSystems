@@ -8,11 +8,24 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include "mycurl.h"
+#include "linked_list.h"
+
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 // These two must be declared globally
 struct addrinfo hints;
 struct addrinfo *infoptr;
 
+
+void *worker_thread(void * targ){
+    struct arg* arg = (struct arg*)targ;
+    char *output = parse_and_fetch_url(arg->url);
+    pthread_mutex_lock(&mutex1);
+    linked_list_add(arg->my_list, output);
+    pthread_mutex_unlock(&mutex1);
+    free(output);
+    pthread_exit(0);
+}
 
 char* parse_and_fetch_url(char*url){
     // Adapted from: https://stackoverflow.com/questions/726122/best-ways-of-parsing-a-url-using-c
