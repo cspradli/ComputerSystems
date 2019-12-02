@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include "mycurl.h"
 
-pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
-
 
 int main(int argc, char**argv){
     pthread_t tid[10];
@@ -22,22 +20,18 @@ int main(int argc, char**argv){
     int i;
 
     linked_list* my_list = create_linked_list();
-    //hread_data *tdata;
-    // tdata = malloc(sizeof(tdata));
+    
     struct arg targ[10];
     for(i=0; i< 10; i++){
         printf("%s\n", urls[i]);
-        //tdata->ll = my_list;
-        //tdata->name=urls[i];
-        //printf("%s\n",urls[i]);
-        //pthread_create(&tid[i], NULL, thread, (void *)&tdata);
         targ[i].i = i;
         targ[i].url = urls[i];
         targ[i].my_list = my_list;
+        pthread_create(&tid[i], NULL, worker_thread, (void *)&targ[i]);
     }
 
     for (i=0; i < 10; i++){
-
+        pthread_join(tid[i], NULL);
     }
 
     // print out list
@@ -46,6 +40,7 @@ int main(int argc, char**argv){
         n = linked_list_get(my_list, i);
         printf("[%i] %s\n", i, n->data);
     }
+
     // clean up
     destroy_linked_list( my_list );
     return 0;

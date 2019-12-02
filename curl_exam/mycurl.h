@@ -2,7 +2,7 @@
 #define mycurl_h
 
 #include <pthread.h>
-
+#include "linked_list.h"
 
 char* parse_and_fetch_url(char*url);
 

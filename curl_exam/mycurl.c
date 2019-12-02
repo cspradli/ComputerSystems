@@ -8,14 +8,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include "mycurl.h"
-#include "linked_list.h"
 
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
-
-// These two must be declared globally
-struct addrinfo hints;
-struct addrinfo *infoptr;
-
 
 void *worker_thread(void * targ){
     struct arg* arg = (struct arg*)targ;
@@ -57,6 +51,10 @@ char* mycurl(char *address_to_connect_to, int port_to_connect_to, char *webpage_
     //char *address_to_connect_to = "www.cs.unca.edu";
     //int port_to_connect_to = 80;
     //char *webpage_to_get = "/~drawert/cs335/";
+
+    // These two must be declared globally
+    struct addrinfo hints;
+    struct addrinfo *infoptr;
 
     // Create socket
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
